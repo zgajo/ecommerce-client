@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { Form, Input, Segment, Grid } from "semantic-ui-react"
 import { GoogleLogin } from "react-google-login"
+import FacebookLogin from "react-facebook-login"
 import { Helmet } from "react-helmet"
 
 import { ResponsiveContainer } from "../components/layout"
@@ -12,6 +13,10 @@ const options = [
 ]
 
 const responseGoogle = response => {
+  console.log(response)
+}
+
+const responseFacebook = response => {
   console.log(response)
 }
 
@@ -36,6 +41,23 @@ class SignUp extends Component {
         <Segment style={{ padding: "8em 0em" }} vertical>
           <Grid container stackable verticalAlign="middle">
             <Form className={styles.form_width}>
+              <GoogleLogin
+                clientId={process.env.GOOGLE_CLIENT_ID} //CLIENTID NOT CREATED YET
+                buttonText="SIGNUP WITH GOOGLE"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+              />
+
+              <FacebookLogin
+                appId={process.env.FACEBOOK_APP_ID}
+                autoLoad={true}
+                textButton="SIGNUP WITH FACEBOOK"
+                fields="name,email,picture"
+                callback={responseFacebook}
+                size="small"
+                icon="fa-facebook"
+              />
+
               <Form.Group widths="equal">
                 <Form.Input fluid label="Name" required placeholder="Name" />
                 <Form.Input
@@ -123,13 +145,6 @@ class SignUp extends Component {
               </Form.Group>
 
               <Form.Button>Submit</Form.Button>
-
-              <GoogleLogin
-                clientId={process.env.GOOGLE_CLIENT_ID} //CLIENTID NOT CREATED YET
-                buttonText="SIGNUP WITH GOOGLE"
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
-              />
             </Form>
           </Grid>
         </Segment>
