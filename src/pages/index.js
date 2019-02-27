@@ -12,7 +12,7 @@ import {
 } from "semantic-ui-react"
 
 const HomepageLayout = () => (
-  <ResponsiveContainer>
+  <ResponsiveContainer indexPage>
     <Segment style={{ padding: "8em 0em" }} vertical>
       <Grid container stackable verticalAlign="middle">
         <Grid.Row>

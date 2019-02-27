@@ -10,8 +10,11 @@ import {
   Sidebar,
   Visibility,
 } from "semantic-ui-react"
-import { MobileSidebar, DesktopHeader } from "./Header"
+
 import Footer from "./Footer"
+import HomepageHeading from "./HomepageHeading"
+import DesktopHeader from "./Header"
+import MobileSidebar from "./MobileSidebar"
 
 // Heads up!
 // We using React Static to prerender our docs with server side rendering, this is a quite simple solution.
@@ -33,7 +36,7 @@ class DesktopContainer extends Component {
   showFixedMenu = () => this.setState({ fixed: true })
 
   render() {
-    const { children } = this.props
+    const { children, indexPage } = this.props
     const { fixed } = this.state
 
     return (
@@ -43,10 +46,11 @@ class DesktopContainer extends Component {
           onBottomPassed={this.showFixedMenu}
           onBottomPassedReverse={this.hideFixedMenu}
         >
-          <DesktopHeader fixed={fixed} />
+          <DesktopHeader fixed={fixed} indexPage={indexPage} />
         </Visibility>
 
         {children}
+
         <Footer />
       </Responsive>
     )
@@ -65,7 +69,7 @@ class MobileContainer extends Component {
   handleToggle = () => this.setState({ sidebarOpened: true })
 
   render() {
-    const { children } = this.props
+    const { children, indexPage } = this.props
     const { sidebarOpened } = this.state
 
     return (
@@ -101,6 +105,7 @@ class MobileContainer extends Component {
                 </Menu.Item>
               </Menu>
             </Container>
+            <HomepageHeading indexPage={indexPage} mobile />
           </Segment>
 
           {children}
@@ -115,10 +120,10 @@ MobileContainer.propTypes = {
   children: PropTypes.node,
 }
 
-const ResponsiveContainer = ({ children }) => (
+const ResponsiveContainer = ({ children, indexPage }) => (
   <div>
-    <DesktopContainer>{children}</DesktopContainer>
-    <MobileContainer>{children}</MobileContainer>
+    <DesktopContainer indexPage={indexPage}>{children}</DesktopContainer>
+    <MobileContainer indexPage={indexPage}>{children}</MobileContainer>
   </div>
 )
 
