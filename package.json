@@ -13,8 +13,14 @@
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
   },
   "dependencies": {
+    "apollo-cache-inmemory": "^1.5.1",
+    "apollo-client": "^2.5.1",
+    "apollo-link": "^1.2.8",
+    "apollo-link-error": "^1.1.7",
+    "apollo-link-http": "^1.5.11",
     "gatsby": "^2.1.18",
     "gatsby-plugin-react-helmet": "^3.0.7",
+    "graphql-tag": "^2.10.1",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-facebook-login": "^4.1.1",
