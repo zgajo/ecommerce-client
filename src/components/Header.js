@@ -1,5 +1,5 @@
 import React from "react"
-import { graphql, StaticQuery, push, Link } from "gatsby"
+import { graphql, StaticQuery, push } from "gatsby"
 
 import { Button, Container, Menu, Segment } from "semantic-ui-react"
 import HomepageHeading from "./HomepageHeading"
@@ -46,16 +46,16 @@ const DesktopHeader = ({ fixed, indexPage }) => (
               <Button as="a" inverted={!fixed}>
                 Log in
               </Button>
-              <Link to={data.site.siteMetadata.sign_up_slug}>
-                <Button
-                  as="a"
-                  inverted={!fixed}
-                  primary={fixed}
-                  style={{ marginLeft: "0.5em" }}
-                >
-                  Sign Up
-                </Button>
-              </Link>
+
+              <Button
+                onClick={() => push(data.site.siteMetadata.sign_up_slug)}
+                as="a"
+                inverted={!fixed}
+                primary={fixed}
+                style={{ marginLeft: "0.5em" }}
+              >
+                Sign Up
+              </Button>
             </Menu.Item>
           </Container>
         </Menu>

@@ -1,5 +1,8 @@
 import React, { Component } from "react"
 import { Form, Input, Segment, Grid } from "semantic-ui-react"
+import { GoogleLogin } from "react-google-login"
+import { Helmet } from "react-helmet"
+
 import { ResponsiveContainer } from "../components/layout"
 import styles from "./sign_up.module.css"
 
@@ -7,6 +10,10 @@ const options = [
   { key: "m", text: "Male", value: "male" },
   { key: "f", text: "Female", value: "female" },
 ]
+
+const responseGoogle = response => {
+  console.log(response)
+}
 
 class SignUp extends Component {
   state = {}
@@ -16,6 +23,16 @@ class SignUp extends Component {
   render() {
     return (
       <ResponsiveContainer>
+        <Helmet>
+          <script src="https://apis.google.com/js/platform.js" async defer />
+          <meta
+            name="google-signin-client_id"
+            content={process.env.GOOGLE_CLIENT_ID}
+          />
+
+          <title>My Title</title>
+        </Helmet>
+
         <Segment style={{ padding: "8em 0em" }} vertical>
           <Grid container stackable verticalAlign="middle">
             <Form className={styles.form_width}>
@@ -106,6 +123,13 @@ class SignUp extends Component {
               </Form.Group>
 
               <Form.Button>Submit</Form.Button>
+
+              <GoogleLogin
+                clientId={process.env.GOOGLE_CLIENT_ID} //CLIENTID NOT CREATED YET
+                buttonText="SIGNUP WITH GOOGLE"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+              />
             </Form>
           </Grid>
         </Segment>

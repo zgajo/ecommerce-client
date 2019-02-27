@@ -5,4 +5,5 @@ module.exports = {
     login_slug: "/login",
     sign_up_slug: "/sign_up",
   },
+  plugins: [`gatsby-plugin-react-helmet`],
 }
