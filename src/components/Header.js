@@ -51,7 +51,15 @@ const DesktopHeader = ({ fixed, indexPage }) => (
 
                 {data.ecommerce.categories &&
                   data.ecommerce.categories.map(({ name }) => (
-                    <Dropdown.Item onClick={() => push(name.toLowerCase())}>
+                    <Dropdown.Item
+                      onClick={() =>
+                        push(
+                          `${
+                            data.site.siteMetadata.category_slug
+                          }/${name.toLowerCase()}`
+                        )
+                      }
+                    >
                       {name}
                     </Dropdown.Item>
                   ))}
