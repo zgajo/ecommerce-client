@@ -10,7 +10,7 @@ const MobileSidebar = ({ handleSidebarHide, sidebarOpened }) => (
         site {
           siteMetadata {
             sign_up_slug
-            categories_slug
+            category_slug
             homepage_slug
           }
         }

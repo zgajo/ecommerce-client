@@ -4,7 +4,7 @@ module.exports = {
     homepage_slug: "/",
     login_slug: "/login",
     sign_up_slug: "/sign_up",
-    categories_slug: "/categories",
+    category_slug: "/category",
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

@@ -12,7 +12,7 @@ const DesktopHeader = ({ fixed, indexPage }) => (
           siteMetadata {
             sign_up_slug
             homepage_slug
-            categories_slug
+            category_slug
           }
         }
         ecommerce {
