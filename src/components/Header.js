@@ -1,7 +1,7 @@
 import React from "react"
 import { graphql, StaticQuery, push } from "gatsby"
 
-import { Button, Container, Menu, Segment } from "semantic-ui-react"
+import { Button, Container, Menu, Segment, Dropdown } from "semantic-ui-react"
 import HomepageHeading from "./HomepageHeading"
 
 const DesktopHeader = ({ fixed, indexPage }) => (
@@ -12,6 +12,12 @@ const DesktopHeader = ({ fixed, indexPage }) => (
           siteMetadata {
             sign_up_slug
             homepage_slug
+            categories_slug
+          }
+        }
+        ecommerce {
+          categories {
+            name
           }
         }
       }
@@ -38,9 +44,19 @@ const DesktopHeader = ({ fixed, indexPage }) => (
             >
               Home
             </Menu.Item>
-            <Menu.Item as="a">Work</Menu.Item>
-            <Menu.Item as="a">Company</Menu.Item>
-            <Menu.Item as="a">Careers</Menu.Item>
+
+            <Dropdown text="Product Categories" item simple>
+              <Dropdown.Menu>
+                <Dropdown.Header>Categories</Dropdown.Header>
+
+                {data.ecommerce.categories &&
+                  data.ecommerce.categories.map(({ name }) => (
+                    <Dropdown.Item onClick={() => push(name.toLowerCase())}>
+                      {name}
+                    </Dropdown.Item>
+                  ))}
+              </Dropdown.Menu>
+            </Dropdown>
 
             <Menu.Item position="right">
               <Button as="a" inverted={!fixed}>
