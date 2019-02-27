@@ -12,10 +12,6 @@ const options = [
   { key: "f", text: "Female", value: "female" },
 ]
 
-const responseGoogle = response => {
-  console.log(response)
-}
-
 const responseFacebook = response => {
   console.log(response)
 }
@@ -24,6 +20,9 @@ class SignUp extends Component {
   state = {}
 
   handleChange = (e, { value }) => this.setState({ value })
+  responseGoogle = response => {
+    console.log(response)
+  }
 
   render() {
     return (
@@ -44,8 +43,8 @@ class SignUp extends Component {
               <GoogleLogin
                 clientId={process.env.GOOGLE_CLIENT_ID} //CLIENTID NOT CREATED YET
                 buttonText="SIGNUP WITH GOOGLE"
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
+                onSuccess={this.responseGoogle}
+                onFailure={this.responseGoogle}
               />
 
               <FacebookLogin
