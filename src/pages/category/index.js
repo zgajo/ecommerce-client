@@ -17,7 +17,6 @@ class Categories extends Component {
                   data.ecommerce.categories.map(({ name }, index) => (
                     <Menu.Item
                       name={name}
-                      //   TODO: Active is based on slug
                       active={
                         data.sitePage.path.includes(name.toLowerCase()) ||
                         index === 0
