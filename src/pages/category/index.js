@@ -1,9 +1,39 @@
 import React, { Component } from "react"
 import { graphql, navigate } from "gatsby"
-import { Segment, Grid, Menu } from "semantic-ui-react"
+import {
+  Segment,
+  Grid,
+  Menu,
+  Button,
+  Icon,
+  Card,
+  Image,
+  Dimmer,
+} from "semantic-ui-react"
 import { ResponsiveContainer } from "../../components/layout"
 
+import styles from "./index.module.css"
+
 class Categories extends Component {
+  state = {}
+
+  componentDidMount = () => {
+    const { data } = this.props
+    const keys = data.ecommerce.categories[0].products.map(
+      (product, index) => `active_${index}`
+    )
+
+    const actives = keys.reduce(
+      (obj, curr) => (obj = { ...obj, [curr]: false }),
+      {}
+    )
+
+    this.setState({ ...actives })
+  }
+
+  handleShow = key => () => this.setState({ [key]: true })
+  handleHide = key => () => this.setState({ [key]: false })
+
   render() {
     const { data } = this.props
 
@@ -16,6 +46,7 @@ class Categories extends Component {
                 {data.ecommerce.categories &&
                   data.ecommerce.categories.map(({ name }, index) => (
                     <Menu.Item
+                      key={"category_" + index}
                       name={name}
                       active={
                         data.sitePage.path.includes(name.toLowerCase()) ||
@@ -34,23 +65,65 @@ class Categories extends Component {
             </Grid.Column>
 
             <Grid.Column stretched width={12}>
-              <Segment>
+              {/* <Item.Group> */}
+              <Grid columns="three">
                 {data.ecommerce.categories &&
                   data.ecommerce.categories.length &&
-                  data.ecommerce.categories[0].products.map(product => {
-                    return (
-                      <div>
-                        {product.name}
-                        <img
-                          src={`${process.env.SERVER_URL}/product_images/${
-                            product.thumbnail
-                          }`}
-                          alt={product.name}
-                        />
-                      </div>
-                    )
-                  })}
-              </Segment>
+                  data.ecommerce.categories[0].products.map(
+                    (product, index) => {
+                      return (
+                        <Grid.Column key={`active_${index}`}>
+                          <Dimmer.Dimmable
+                            as={Card}
+                            dimmed={this.state[`active_${index}`]}
+                            onMouseEnter={this.handleShow(`active_${index}`)}
+                            onMouseLeave={this.handleHide(`active_${index}`)}
+                          >
+                            <Image
+                              fluid={true}
+                              src={`${process.env.SERVER_URL}/product_images/${
+                                product.image
+                              }`}
+                            />
+                            <Card.Content>
+                              <Card.Header>{product.name}</Card.Header>
+                              <Card.Description
+                                className={styles.items_card_description}
+                                content={product.description}
+                              />
+                            </Card.Content>
+                            <Card.Content extra>
+                              <a href=":;">
+                                <Icon name="user" />
+                                10 Friends
+                              </a>
+                            </Card.Content>
+
+                            <Dimmer
+                              active={this.state[`active_${index}`]}
+                              onClickOutside={this.handleHide(
+                                `active_${index}`
+                              )}
+                              // verticalAlign="center"
+                            >
+                              <Grid textAlign="center">
+                                <Grid.Row>
+                                  <Button positive>
+                                    <Icon name="shop" /> Add to basket
+                                  </Button>
+                                </Grid.Row>
+                                <Grid.Row>
+                                  <Button>View more</Button>
+                                </Grid.Row>
+                              </Grid>
+                            </Dimmer>
+                          </Dimmer.Dimmable>
+                        </Grid.Column>
+                      )
+                    }
+                  )}
+              </Grid>
+              {/* </Item.Group> */}
             </Grid.Column>
           </Grid>
         </Segment>
@@ -82,6 +155,7 @@ export const query = graphql`
         products {
           product_id
           name
+          description
           price
           price
           discounted_price
