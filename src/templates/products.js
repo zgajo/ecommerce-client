@@ -1,9 +1,8 @@
 import React, { Component } from "react"
-import { graphql, navigate } from "gatsby"
+import { graphql } from "gatsby"
 import {
   Segment,
   Grid,
-  Menu,
   Button,
   Icon,
   Card,
@@ -15,6 +14,7 @@ import styles from "./products.module.css"
 import { client } from "../apollo"
 import { categoryProducts } from "../apollo/query"
 import { formatErrors, asyncAction } from "../utils/helpers"
+import CategorySidebar from "../components/CategorySidebar"
 
 class Categories extends Component {
   state = {
@@ -105,7 +105,6 @@ class Categories extends Component {
   }
 
   render() {
-    const { data } = this.props
     const { category_products } = this.state
 
     return (
@@ -115,25 +114,7 @@ class Categories extends Component {
             <Grid container stackable verticalAlign="middle">
               <Grid>
                 <Grid.Column width={4}>
-                  <Menu fluid vertical tabular>
-                    {data.ecommerce.categories &&
-                      data.ecommerce.categories.map(({ name }, index) => (
-                        <Menu.Item
-                          key={"category_" + index}
-                          name={name}
-                          active={data.sitePage.path.includes(
-                            name.toLowerCase()
-                          )}
-                          onClick={() =>
-                            navigate(
-                              `${
-                                data.site.siteMetadata.category_slug
-                              }/${name.toLowerCase()}/`
-                            )
-                          }
-                        />
-                      ))}
-                  </Menu>
+                  <CategorySidebar />
                 </Grid.Column>
 
                 <Grid.Column stretched width={12}>
@@ -219,14 +200,6 @@ export const query = graphql`
       }
     }
     ecommerce {
-      categories {
-        name
-        department {
-          department_id
-          name
-          description
-        }
-      }
       category_products(
         where: { category_id: $category_id }
         limit: $limit
