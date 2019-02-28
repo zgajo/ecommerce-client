@@ -19,7 +19,47 @@ import CategorySidebar from "../components/CategorySidebar"
 class Categories extends Component {
   state = {
     category_products: this.props.data.ecommerce.category_products,
+    filters: {
+      // sizes: [],
+      // colors: [],
+    },
   }
+
+  /**
+   * ***************** FILTERING ************************
+   */
+  changeCheckboxState = filtersKey => name => (e, { value }) => {
+    console.log(filtersKey, name, value)
+    let filters = { ...this.state.filters }
+    if (!filters[filtersKey]) {
+      filters = {
+        ...filters,
+        [filtersKey]: [],
+      }
+    }
+
+    let filtered = [...filters[filtersKey]]
+
+    if (filtered.some(obj => obj[value])) {
+      filtered = filtered.filter(obj => !obj[value])
+    } else {
+      filtered.push({ [value]: name })
+    }
+
+    this.setState(
+      prev => ({
+        ...prev,
+        filters: {
+          ...filters,
+          [filtersKey]: filtered,
+        },
+      }),
+      () => console.log(this.state)
+    )
+  }
+  /**
+   * ************************************************
+   */
 
   componentDidMount = () => {
     window.addEventListener(`scroll`, this.handleScroll)
@@ -110,75 +150,76 @@ class Categories extends Component {
     return (
       <ResponsiveContainer>
         <Segment style={{ padding: "4em 0em" }} vertical>
-          <div onScroll={this.handleScroller}>
-            <Grid container stackable verticalAlign="middle">
-              <Grid>
-                <Grid.Column width={4}>
-                  <CategorySidebar />
-                </Grid.Column>
+          <Grid container stackable verticalAlign="middle">
+            <Grid>
+              <Grid.Column width={4}>
+                <CategorySidebar
+                  changeCheckboxState={this.changeCheckboxState}
+                  filters={this.state.filters}
+                />
+              </Grid.Column>
 
-                <Grid.Column stretched width={12}>
-                  {/* <Item.Group> */}
-                  <Grid columns="three">
-                    {category_products &&
-                      category_products.length &&
-                      category_products.map((product, index) => {
-                        return (
-                          <Grid.Column key={`active_${index}`}>
-                            <Dimmer.Dimmable
-                              as={Card}
-                              dimmed={this.state[`active_${index}`]}
-                              onMouseEnter={this.handleShow(`active_${index}`)}
-                              onMouseLeave={this.handleHide(`active_${index}`)}
-                            >
-                              <Image
-                                fluid={true}
-                                src={`${
-                                  process.env.SERVER_URL
-                                }/product_images/${product.image}`}
+              <Grid.Column stretched width={12}>
+                {/* <Item.Group> */}
+                <Grid columns="three">
+                  {category_products &&
+                    category_products.length &&
+                    category_products.map((product, index) => {
+                      return (
+                        <Grid.Column key={`active_${index}`}>
+                          <Dimmer.Dimmable
+                            as={Card}
+                            dimmed={this.state[`active_${index}`]}
+                            onMouseEnter={this.handleShow(`active_${index}`)}
+                            onMouseLeave={this.handleHide(`active_${index}`)}
+                          >
+                            <Image
+                              fluid={true}
+                              src={`${process.env.SERVER_URL}/product_images/${
+                                product.image
+                              }`}
+                            />
+                            <Card.Content>
+                              <Card.Header>{product.name}</Card.Header>
+                              <Card.Description
+                                className={styles.items_card_description}
+                                content={product.description}
                               />
-                              <Card.Content>
-                                <Card.Header>{product.name}</Card.Header>
-                                <Card.Description
-                                  className={styles.items_card_description}
-                                  content={product.description}
-                                />
-                              </Card.Content>
-                              <Card.Content extra>
-                                <a href=":;">
-                                  <Icon name="user" />
-                                  10 Friends
-                                </a>
-                              </Card.Content>
+                            </Card.Content>
+                            <Card.Content extra>
+                              <a href=":;">
+                                <Icon name="user" />
+                                10 Friends
+                              </a>
+                            </Card.Content>
 
-                              <Dimmer
-                                active={this.state[`active_${index}`]}
-                                onClickOutside={this.handleHide(
-                                  `active_${index}`
-                                )}
-                                // verticalAlign="center"
-                              >
-                                <Grid textAlign="center">
-                                  <Grid.Row>
-                                    <Button positive>
-                                      <Icon name="shop" /> Add to basket
-                                    </Button>
-                                  </Grid.Row>
-                                  <Grid.Row>
-                                    <Button>View more</Button>
-                                  </Grid.Row>
-                                </Grid>
-                              </Dimmer>
-                            </Dimmer.Dimmable>
-                          </Grid.Column>
-                        )
-                      })}
-                  </Grid>
-                  {/* </Item.Group> */}
-                </Grid.Column>
-              </Grid>
+                            <Dimmer
+                              active={this.state[`active_${index}`]}
+                              onClickOutside={this.handleHide(
+                                `active_${index}`
+                              )}
+                              // verticalAlign="center"
+                            >
+                              <Grid textAlign="center">
+                                <Grid.Row>
+                                  <Button positive>
+                                    <Icon name="shop" /> Add to basket
+                                  </Button>
+                                </Grid.Row>
+                                <Grid.Row>
+                                  <Button>View more</Button>
+                                </Grid.Row>
+                              </Grid>
+                            </Dimmer>
+                          </Dimmer.Dimmable>
+                        </Grid.Column>
+                      )
+                    })}
+                </Grid>
+                {/* </Item.Group> */}
+              </Grid.Column>
             </Grid>
-          </div>
+          </Grid>
         </Segment>
       </ResponsiveContainer>
     )
