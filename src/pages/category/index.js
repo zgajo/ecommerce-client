@@ -35,81 +35,21 @@ class Categories extends Component {
 
             <Grid.Column stretched width={12}>
               <Segment>
-                This is an stretched grid column. This segment will always match
-                the tab height This is an stretched grid column. This segment
-                will always match the tab height This is an stretched grid
-                column. This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height This is an stretched grid column.
-                This segment will always match the tab height This is an
-                stretched grid column. This segment will always match the tab
-                height This is an stretched grid column. This segment will
-                always match the tab height
+                {data.ecommerce.categories &&
+                  data.ecommerce.categories.length &&
+                  data.ecommerce.categories[0].products.map(product => {
+                    return (
+                      <div>
+                        {product.name}
+                        <img
+                          src={`${process.env.SERVER_URL}/product_images/${
+                            product.thumbnail
+                          }`}
+                          alt={product.name}
+                        />
+                      </div>
+                    )
+                  })}
               </Segment>
             </Grid.Column>
           </Grid>
@@ -134,6 +74,21 @@ export const query = graphql`
     ecommerce {
       categories {
         name
+        department {
+          department_id
+          name
+          description
+        }
+        products {
+          product_id
+          name
+          price
+          price
+          discounted_price
+          image
+          image_2
+          thumbnail
+        }
       }
     }
   }
