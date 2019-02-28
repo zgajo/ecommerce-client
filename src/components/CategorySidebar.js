@@ -1,6 +1,6 @@
 import React from "react"
-import { graphql, navigate, StaticQuery } from "gatsby"
-import { Menu } from "semantic-ui-react"
+import { graphql, StaticQuery } from "gatsby"
+import { Menu, Checkbox } from "semantic-ui-react"
 
 const CategorySidebar = () => (
   <StaticQuery
@@ -9,42 +9,43 @@ const CategorySidebar = () => (
         sitePage {
           path
         }
-        site {
-          siteMetadata {
-            category_slug
-            DEFAULT_LIMIT
-            DEFAULT_OFFSET
-          }
-        }
         ecommerce {
-          categories {
+          attributes {
+            attribute_id
             name
-            department {
-              department_id
-              name
-              description
+            attribute_values {
+              attribute_value_id
+              value
             }
           }
         }
       }
     `}
-    render={data => (
-      <Menu fluid vertical tabular>
-        {data.ecommerce.categories &&
-          data.ecommerce.categories.map(({ name }, index) => (
-            <Menu.Item
-              key={"category_" + index}
-              name={name}
-              active={data.sitePage.path.includes(name.toLowerCase())}
-              onClick={() =>
-                navigate(
-                  `${
-                    data.site.siteMetadata.category_slug
-                  }/${name.toLowerCase()}/`
-                )
-              }
-            />
-          ))}
+    render={({ ecommerce: { attributes } }) => (
+      <Menu vertical>
+        {attributes &&
+          attributes.map(attribute => {
+            const { attribute_values } = attribute
+
+            return (
+              <Menu.Item key={`attribute_${attribute.attribute_id}`}>
+                <Menu.Header>{attribute.name}</Menu.Header>
+
+                <Menu.Menu>
+                  {attribute_values.map(av => {
+                    return (
+                      <Menu.Item
+                        key={`av_${av.attribute_value_id}`}
+                        name="enterprise"
+                      >
+                        <Checkbox label={av.value} />
+                      </Menu.Item>
+                    )
+                  })}
+                </Menu.Menu>
+              </Menu.Item>
+            )
+          })}
       </Menu>
     )}
   />
