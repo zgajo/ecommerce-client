@@ -1,7 +1,5 @@
 const path = require(`path`)
 
-const { createFilePath } = require(`gatsby-source-filesystem`)
-
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions
 
@@ -10,6 +8,8 @@ exports.createPages = ({ graphql, actions }) => {
       site {
         siteMetadata {
           category_slug
+          DEFAULT_OFFSET
+          DEFAULT_LIMIT
         }
       }
       ecommerce {
@@ -21,6 +21,7 @@ exports.createPages = ({ graphql, actions }) => {
     }
   `).then(result => {
     result.data.ecommerce.categories.forEach(({ name, category_id }) => {
+      console.log(category_id)
       createPage({
         path: `${
           result.data.site.siteMetadata.category_slug
@@ -31,6 +32,8 @@ exports.createPages = ({ graphql, actions }) => {
           // in page queries as GraphQL variables.
           slug: name,
           category_id: category_id,
+          limit: result.data.site.siteMetadata.DEFAULT_LIMIT,
+          offset: result.data.site.siteMetadata.DEFAULT_OFFSET,
         },
       })
     })
