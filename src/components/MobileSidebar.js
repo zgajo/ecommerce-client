@@ -1,7 +1,7 @@
 import React from "react"
-import { graphql, StaticQuery, Link } from "gatsby"
+import { graphql, StaticQuery, navigate } from "gatsby"
 
-import { Menu, Sidebar } from "semantic-ui-react"
+import { Menu, Sidebar, Dropdown } from "semantic-ui-react"
 
 const MobileSidebar = ({ handleSidebarHide, sidebarOpened }) => (
   <StaticQuery
@@ -10,6 +10,13 @@ const MobileSidebar = ({ handleSidebarHide, sidebarOpened }) => (
         site {
           siteMetadata {
             sign_up_slug
+            category_slug
+            homepage_slug
+          }
+        }
+        ecommerce {
+          categories {
+            name
           }
         }
       }
@@ -23,16 +30,42 @@ const MobileSidebar = ({ handleSidebarHide, sidebarOpened }) => (
         vertical
         visible={sidebarOpened}
       >
-        <Menu.Item as="a" active>
+        <Menu.Item
+          as="a"
+          active
+          onClick={() => navigate(data.site.siteMetadata.homepage_slug)}
+        >
           Home
         </Menu.Item>
-        <Menu.Item as="a">Work</Menu.Item>
-        <Menu.Item as="a">Company</Menu.Item>
-        <Menu.Item as="a">Careers</Menu.Item>
+
+        <Dropdown text="Product Categories" item simple>
+          <Dropdown.Menu>
+            <Dropdown.Header>Categories</Dropdown.Header>
+
+            {data.ecommerce.categories &&
+              data.ecommerce.categories.map(({ name }) => (
+                <Dropdown.Item
+                  onClick={() =>
+                    navigate(
+                      `${
+                        data.site.siteMetadata.category_slug
+                      }${name.toLowerCase()}/`
+                    )
+                  }
+                >
+                  {name}
+                </Dropdown.Item>
+              ))}
+          </Dropdown.Menu>
+        </Dropdown>
+
         <Menu.Item as="a">Log in</Menu.Item>
-        <Link to={data.site.siteMetadata.sign_up_slug}>
-          <Menu.Item as="a">Sign Up</Menu.Item>
-        </Link>
+        <Menu.Item
+          as="a"
+          onClick={() => navigate(data.site.siteMetadata.sign_up_slug)}
+        >
+          Sign Up
+        </Menu.Item>
       </Sidebar>
     )}
   />

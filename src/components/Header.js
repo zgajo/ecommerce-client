@@ -1,7 +1,7 @@
 import React from "react"
-import { graphql, StaticQuery, push } from "gatsby"
+import { graphql, StaticQuery, navigate } from "gatsby"
 
-import { Button, Container, Menu, Segment } from "semantic-ui-react"
+import { Button, Container, Menu, Segment, Dropdown } from "semantic-ui-react"
 import HomepageHeading from "./HomepageHeading"
 
 const DesktopHeader = ({ fixed, indexPage }) => (
@@ -12,6 +12,12 @@ const DesktopHeader = ({ fixed, indexPage }) => (
           siteMetadata {
             sign_up_slug
             homepage_slug
+            category_slug
+          }
+        }
+        ecommerce {
+          categories {
+            name
           }
         }
       }
@@ -34,13 +40,32 @@ const DesktopHeader = ({ fixed, indexPage }) => (
             <Menu.Item
               as="a"
               active
-              onClick={() => push(data.site.siteMetadata.homepage_slug)}
+              onClick={() => navigate(data.site.siteMetadata.homepage_slug)}
             >
               Home
             </Menu.Item>
-            <Menu.Item as="a">Work</Menu.Item>
-            <Menu.Item as="a">Company</Menu.Item>
-            <Menu.Item as="a">Careers</Menu.Item>
+
+            <Dropdown text="Product Categories" item simple>
+              <Dropdown.Menu>
+                <Dropdown.Header>Categories</Dropdown.Header>
+
+                {data.ecommerce.categories &&
+                  data.ecommerce.categories.map(({ name }, index) => (
+                    <Dropdown.Item
+                      key={`dropdown_category_name_${index}`}
+                      onClick={() =>
+                        navigate(
+                          `${
+                            data.site.siteMetadata.category_slug
+                          }${name.toLowerCase()}/`
+                        )
+                      }
+                    >
+                      {name}
+                    </Dropdown.Item>
+                  ))}
+              </Dropdown.Menu>
+            </Dropdown>
 
             <Menu.Item position="right">
               <Button as="a" inverted={!fixed}>
@@ -48,7 +73,7 @@ const DesktopHeader = ({ fixed, indexPage }) => (
               </Button>
 
               <Button
-                onClick={() => push(data.site.siteMetadata.sign_up_slug)}
+                onClick={() => navigate(data.site.siteMetadata.sign_up_slug)}
                 as="a"
                 inverted={!fixed}
                 primary={fixed}
