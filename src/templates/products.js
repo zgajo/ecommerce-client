@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { graphql, push } from "gatsby"
+import { graphql, navigate } from "gatsby"
 import { Segment, Grid, Menu } from "semantic-ui-react"
 import { ResponsiveContainer } from "../components/layout"
 
@@ -14,17 +14,18 @@ class Categories extends Component {
             <Grid.Column width={4}>
               <Menu fluid vertical tabular>
                 {data.ecommerce.categories &&
-                  data.ecommerce.categories.map(({ name }) => (
+                  data.ecommerce.categories.map(({ name }, index) => (
                     <Menu.Item
+                      key={`category_name_${index}`}
                       name={name}
-                      active={window.location.href.includes(name.toLowerCase())}
-                      onClick={() =>
-                        push(
+                      // active={window.location.href.includes(name.toLowerCase())}
+                      onClick={() => {
+                        navigate(
                           `${
                             data.site.siteMetadata.category_slug
-                          }/${name.toLowerCase()}`
+                          }/${name.toLowerCase()}/`
                         )
-                      }
+                      }}
                     />
                   ))}
               </Menu>
@@ -128,6 +129,21 @@ export const query = graphql`
     ecommerce {
       categories {
         name
+        department {
+          department_id
+          name
+          description
+        }
+        products {
+          product_id
+          name
+          price
+          price
+          discounted_price
+          image
+          image_2
+          thumbnail
+        }
       }
     }
   }

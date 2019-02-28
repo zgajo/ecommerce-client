@@ -14,6 +14,7 @@ exports.createPages = ({ graphql, actions }) => {
       }
       ecommerce {
         categories {
+          category_id
           name
         }
       }
@@ -23,12 +24,13 @@ exports.createPages = ({ graphql, actions }) => {
       createPage({
         path: `${
           result.data.site.siteMetadata.category_slug
-        }/${name.toLowerCase()}`,
+        }${name.toLowerCase()}/`,
         component: path.resolve(`./src/templates/products.js`),
         context: {
           // Data passed to context is available
           // in page queries as GraphQL variables.
           slug: name,
+          category_id: category_id,
         },
       })
     })

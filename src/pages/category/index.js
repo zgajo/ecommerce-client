@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { graphql, push } from "gatsby"
+import { graphql, navigate } from "gatsby"
 import { Segment, Grid, Menu } from "semantic-ui-react"
 import { ResponsiveContainer } from "../../components/layout"
 
@@ -22,10 +22,10 @@ class Categories extends Component {
                         index === 0
                       }
                       onClick={() =>
-                        push(
+                        navigate(
                           `${
                             data.site.siteMetadata.category_slug
-                          }/${name.toLowerCase()}`
+                          }/${name.toLowerCase()}/`
                         )
                       }
                     />

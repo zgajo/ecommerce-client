@@ -1,5 +1,5 @@
 import React from "react"
-import { graphql, StaticQuery, push } from "gatsby"
+import { graphql, StaticQuery, navigate } from "gatsby"
 
 import { Menu, Sidebar, Dropdown } from "semantic-ui-react"
 
@@ -33,7 +33,7 @@ const MobileSidebar = ({ handleSidebarHide, sidebarOpened }) => (
         <Menu.Item
           as="a"
           active
-          onClick={() => push(data.site.siteMetadata.homepage_slug)}
+          onClick={() => navigate(data.site.siteMetadata.homepage_slug)}
         >
           Home
         </Menu.Item>
@@ -44,7 +44,15 @@ const MobileSidebar = ({ handleSidebarHide, sidebarOpened }) => (
 
             {data.ecommerce.categories &&
               data.ecommerce.categories.map(({ name }) => (
-                <Dropdown.Item onClick={() => push(name.toLowerCase())}>
+                <Dropdown.Item
+                  onClick={() =>
+                    navigate(
+                      `${
+                        data.site.siteMetadata.category_slug
+                      }${name.toLowerCase()}/`
+                    )
+                  }
+                >
                   {name}
                 </Dropdown.Item>
               ))}
@@ -54,7 +62,7 @@ const MobileSidebar = ({ handleSidebarHide, sidebarOpened }) => (
         <Menu.Item as="a">Log in</Menu.Item>
         <Menu.Item
           as="a"
-          onClick={() => push(data.site.siteMetadata.sign_up_slug)}
+          onClick={() => navigate(data.site.siteMetadata.sign_up_slug)}
         >
           Sign Up
         </Menu.Item>
