@@ -21,7 +21,6 @@ exports.createPages = ({ graphql, actions }) => {
     }
   `).then(result => {
     result.data.ecommerce.categories.forEach(({ name, category_id }) => {
-      console.log(category_id)
       createPage({
         path: `${
           result.data.site.siteMetadata.category_slug
