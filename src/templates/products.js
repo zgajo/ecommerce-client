@@ -29,8 +29,9 @@ class Categories extends Component {
    * ***************** FILTERING ************************
    */
   changeCheckboxState = filtersKey => name => (e, { value }) => {
-    console.log(filtersKey, name, value)
     let filters = { ...this.state.filters }
+
+    // dynamically generating filters properties
     if (!filters[filtersKey]) {
       filters = {
         ...filters,
@@ -49,12 +50,17 @@ class Categories extends Component {
     this.setState(
       prev => ({
         ...prev,
+        category_products: [],
         filters: {
           ...filters,
           [filtersKey]: filtered,
         },
       }),
-      () => console.log(this.state)
+      () => {
+        this.fetching = true
+        this.offsetCounts = 0
+        this.fetchMoreProducts(true)
+      }
     )
   }
   /**
@@ -105,8 +111,25 @@ class Categories extends Component {
     }
   }
 
-  async fetchMoreProducts() {
-    this.offsetCounts += this.props.pageContext.limit
+  async fetchMoreProducts(newQuery) {
+    if (!newQuery) {
+      this.offsetCounts += this.props.pageContext.limit
+    }
+
+    let attribute_value_ids = []
+
+    if (this.state.filters.sizes && this.state.filters.sizes.length) {
+      attribute_value_ids = attribute_value_ids.concat(
+        this.state.filters.sizes.map(obj => Number(Object.keys(obj)[0])) // Graphql needs Int, so right now I'll do it on client side
+      )
+    }
+
+    if (this.state.filters.colors && this.state.filters.colors.length) {
+      attribute_value_ids = attribute_value_ids.concat(
+        this.state.filters.colors.map(obj => Number(Object.keys(obj)[0]))
+      )
+    }
+
     let [error, data] = await asyncAction(
       client.query({
         query: categoryProducts,
@@ -114,6 +137,8 @@ class Categories extends Component {
           category_id: this.props.pageContext.category_id,
           limit: this.props.pageContext.limit,
           offset: this.offsetCounts,
+          ...(attribute_value_ids &&
+            attribute_value_ids.length && { attribute_value_ids }),
         },
       })
     )

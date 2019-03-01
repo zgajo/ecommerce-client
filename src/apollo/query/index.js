@@ -1,9 +1,17 @@
 import gql from "graphql-tag"
 
 export const categoryProducts = gql`
-  query($category_id: ID!, $limit: Int, $offset: Int) {
+  query(
+    $category_id: ID!
+    $limit: Int
+    $offset: Int
+    $attribute_value_ids: [Int!]
+  ) {
     category_products(
-      where: { category_id: $category_id }
+      where: {
+        category_id: $category_id
+        attribute_value_ids: $attribute_value_ids
+      }
       limit: $limit
       offset: $offset
     ) {
