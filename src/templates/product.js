@@ -1,5 +1,10 @@
 import React from "react"
+import { ResponsiveContainer } from "../components/layout"
 
 export default function product(props) {
-  return <div>{props.pageContext.product_name}</div>
+  return (
+    <ResponsiveContainer>
+      <div>{props.pageContext.product_name}</div>
+    </ResponsiveContainer>
+  )
 }

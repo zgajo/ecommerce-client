@@ -40,7 +40,11 @@ class DesktopContainer extends Component {
     const { fixed } = this.state
 
     return (
-      <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
+      <Responsive
+        getWidth={getWidth}
+        minWidth={Responsive.onlyTablet.minWidth}
+        id="Site"
+      >
         <Visibility
           once={false}
           onBottomPassed={this.showFixedMenu}
@@ -49,7 +53,7 @@ class DesktopContainer extends Component {
           <DesktopHeader fixed={fixed} indexPage={indexPage} />
         </Visibility>
 
-        {children}
+        <div id="Site-content">{children}</div>
 
         <Footer />
       </Responsive>
@@ -83,7 +87,7 @@ class MobileContainer extends Component {
           sidebarOpened={sidebarOpened}
         />
 
-        <Sidebar.Pusher dimmed={sidebarOpened}>
+        <Sidebar.Pusher dimmed={sidebarOpened} id="Site">
           <Segment
             inverted
             textAlign="center"
@@ -108,7 +112,7 @@ class MobileContainer extends Component {
             <HomepageHeading indexPage={indexPage} mobile />
           </Segment>
 
-          {children}
+          <div id="Site-content">{children}</div>
           <Footer />
         </Sidebar.Pusher>
       </Responsive>
