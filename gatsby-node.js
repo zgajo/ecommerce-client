@@ -17,6 +17,10 @@ exports.createPages = ({ graphql, actions }) => {
           category_id
           name
         }
+        products {
+          product_id
+          name
+        }
       }
     }
   `).then(result => {
@@ -33,6 +37,16 @@ exports.createPages = ({ graphql, actions }) => {
           category_id: category_id,
           limit: result.data.site.siteMetadata.DEFAULT_LIMIT,
           offset: result.data.site.siteMetadata.DEFAULT_OFFSET,
+        },
+      })
+    })
+
+    result.data.ecommerce.products.forEach(({ product_id, name }) => {
+      createPage({
+        path: `product/${product_id}/`,
+        component: path.resolve(`./src/templates/product.js`),
+        context: {
+          product_name: name,
         },
       })
     })
