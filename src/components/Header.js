@@ -3,6 +3,7 @@ import { graphql, StaticQuery, navigate } from "gatsby"
 
 import { Button, Container, Menu, Segment, Dropdown } from "semantic-ui-react"
 import HomepageHeading from "./HomepageHeading"
+import Cart from "./Cart"
 
 const DesktopHeader = ({ fixed, indexPage }) => (
   <StaticQuery
@@ -71,7 +72,6 @@ const DesktopHeader = ({ fixed, indexPage }) => (
               <Button as="a" inverted={!fixed}>
                 Log in
               </Button>
-
               <Button
                 onClick={() => navigate(data.site.siteMetadata.sign_up_slug)}
                 as="a"
@@ -81,6 +81,8 @@ const DesktopHeader = ({ fixed, indexPage }) => (
               >
                 Sign Up
               </Button>
+
+              <Cart />
             </Menu.Item>
           </Container>
         </Menu>

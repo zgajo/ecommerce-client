@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import { PropTypes } from "prop-types"
 import {
-  Button,
   Container,
   Icon,
   Menu,
@@ -15,6 +14,7 @@ import Footer from "./Footer"
 import HomepageHeading from "./HomepageHeading"
 import DesktopHeader from "./Header"
 import MobileSidebar from "./MobileSidebar"
+import Cart from "./Cart"
 
 // Heads up!
 // We using React Static to prerender our docs with server side rendering, this is a quite simple solution.
@@ -100,12 +100,7 @@ class MobileContainer extends Component {
                   <Icon name="sidebar" />
                 </Menu.Item>
                 <Menu.Item position="right">
-                  <Button as="a" inverted>
-                    Log in
-                  </Button>
-                  <Button as="a" inverted style={{ marginLeft: "0.5em" }}>
-                    Sign Up
-                  </Button>
+                  <Cart />
                 </Menu.Item>
               </Menu>
             </Container>
