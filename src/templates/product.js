@@ -107,7 +107,13 @@ export default class Product extends Component {
                             size="large"
                           />
                           <span> {avg_rating || ""} </span>
-                          <a>{product.reviews.length} customer reviews</a>
+                          <span
+                            style={{
+                              color: "#4183c4",
+                            }}
+                          >
+                            {product.reviews.length} customer reviews
+                          </span>
                         </div>
                       </Grid.Column>
                       <Grid.Column>
@@ -163,6 +169,9 @@ export default class Product extends Component {
               </Grid.Row>
             </Grid>
           </Segment>
+        </Container>
+        <Container style={{ padding: "2em 0em" }} textAlign="center">
+          <Segment> Reviews </Segment>
         </Container>
       </ResponsiveContainer>
     )
