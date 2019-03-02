@@ -11,3 +11,42 @@
 body {
   background: #f5f5f5;
 }
+
+.product_main_image {
+  width: 300px;
+  height: 280px;
+}
+.product_secondary_image {
+  width: 72px;
+  height: 70px;
+}
+
+.product_images_container {
+  width: 300px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.center_vertically {
+  display: flex;
+  align-items: center;
+}
+
+.line_through {
+  text-decoration: line-through;
+}
+
+.label {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-right: 10px;
+}
+
+.label_amount {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.amount {
+  width: 60px;
+}

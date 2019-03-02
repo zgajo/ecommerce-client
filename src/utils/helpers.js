@@ -14,3 +14,5 @@ export const formatErrors = (error, state) => {
 
   return state
 }
+
+export const isInteger = num => /^[0-9]\d*$/.test(num)

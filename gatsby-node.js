@@ -10,6 +10,7 @@ exports.createPages = ({ graphql, actions }) => {
           category_slug
           DEFAULT_OFFSET
           DEFAULT_LIMIT
+          server_images_folder
         }
       }
       ecommerce {
@@ -77,6 +78,8 @@ exports.createPages = ({ graphql, actions }) => {
         component: path.resolve(`./src/templates/product.js`),
         context: {
           product: product,
+          server_images_folder:
+            result.data.site.siteMetadata.server_images_folder,
         },
       })
     })

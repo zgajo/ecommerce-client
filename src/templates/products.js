@@ -171,6 +171,7 @@ class Categories extends Component {
 
   render() {
     const { category_products } = this.state
+    const { server_images_folder } = this.props.data.site.siteMetadata
 
     return (
       <ResponsiveContainer>
@@ -200,9 +201,9 @@ class Categories extends Component {
                           >
                             <Image
                               fluid={true}
-                              src={`${process.env.SERVER_URL}/product_images/${
-                                product.image
-                              }`}
+                              src={`${
+                                process.env.SERVER_URL
+                              }${server_images_folder}/${product.image}`}
                             />
                             <Card.Content>
                               <Card.Header>{product.name}</Card.Header>
@@ -265,6 +266,7 @@ export const query = graphql`
         category_slug
         DEFAULT_LIMIT
         DEFAULT_OFFSET
+        server_images_folder
       }
     }
     ecommerce {

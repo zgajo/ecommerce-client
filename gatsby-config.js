@@ -5,18 +5,13 @@ module.exports = {
     login_slug: "/login/",
     sign_up_slug: "/sign_up/",
     category_slug: "/category/",
+    server_images_folder: "/product_images",
     DEFAULT_LIMIT: 9,
     DEFAULT_OFFSET: 0,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `src`,
-        path: `${__dirname}/src/`,
-      },
-    },
+
     {
       resolve: "gatsby-source-graphql",
       options: {
