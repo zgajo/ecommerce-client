@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 import {
   Segment,
   Grid,
@@ -232,7 +232,9 @@ class Categories extends Component {
                                   </Button>
                                 </Grid.Row>
                                 <Grid.Row>
-                                  <Button>View more</Button>
+                                  <Link to={`/product/${product.product_id}`}>
+                                    <Button>View more</Button>
+                                  </Link>
                                 </Grid.Row>
                               </Grid>
                             </Dimmer>

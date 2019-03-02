@@ -20,6 +20,36 @@ exports.createPages = ({ graphql, actions }) => {
         products {
           product_id
           name
+          description
+          price
+          discounted_price
+          image
+          image_2
+          thumbnail
+          display
+          categories {
+            category_id
+            name
+            description
+            department {
+              department_id
+              name
+              description
+            }
+          }
+          product_attribute_values {
+            attribute_value_id
+          }
+          reviews {
+            review_id
+            review
+            rating
+            created_on
+            customer {
+              customer_id
+              name
+            }
+          }
         }
       }
     }
@@ -41,12 +71,12 @@ exports.createPages = ({ graphql, actions }) => {
       })
     })
 
-    result.data.ecommerce.products.forEach(({ product_id, name }) => {
+    result.data.ecommerce.products.forEach(product => {
       createPage({
-        path: `product/${product_id}/`,
+        path: `product/${product.product_id}/`,
         component: path.resolve(`./src/templates/product.js`),
         context: {
-          product_name: name,
+          product: product,
         },
       })
     })
