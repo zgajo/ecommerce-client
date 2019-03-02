@@ -50,3 +50,27 @@ body {
 .amount {
   width: 60px;
 }
+
+.facebook_login {
+  margin-left: 0.5em;
+  font-family: Helvetica, sans-serif;
+  font-weight: 700;
+  -webkit-font-smoothing: antialiased;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: calc(0.27548vw + 12.71074px);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 0.3s, border-color 0.3s;
+  background-color: #4c69ba;
+  border: calc(0.06887vw + 0.67769px) solid #4c69ba;
+  padding: calc(0.34435vw + 7.38843px) calc(0.34435vw + 13.38843px);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px 0px,
+    rgba(0, 0, 0, 0.24) 0px 0px 1px 0px;
+  border-radius: 2px;
+}
+
+.facebook_login i {
+  margin-right: calc(0.34435vw + 3.38843px);
+}

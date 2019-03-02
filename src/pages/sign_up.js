@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Form, Input, Segment, Grid, Message } from "semantic-ui-react"
+import { Form, Input, Segment, Message, Container } from "semantic-ui-react"
 import { GoogleLogin } from "react-google-login"
 import FacebookLogin from "react-facebook-login"
 import { Helmet } from "react-helmet"
@@ -59,28 +59,34 @@ class SignUp extends Component {
 
           <title>My Title</title>
         </Helmet>
-
-        <Segment style={{ padding: "4em 0em" }} vertical>
-          <Grid container stackable verticalAlign="middle">
+        <Container style={{ padding: "2em 0em" }}>
+          <Segment>
             <Form className={styles.form_width}>
-              <GoogleLogin
-                clientId={process.env.GOOGLE_CLIENT_ID} //CLIENTID NOT CREATED YET
-                buttonText="SIGNUP WITH GOOGLE"
-                onSuccess={this.responseGoogle}
-                onFailure={this.responseGoogle}
-                autoLoad={false}
-              />
+              <div className="center_vertically">
+                <GoogleLogin
+                  clientId={process.env.GOOGLE_CLIENT_ID} //CLIENTID NOT CREATED YET
+                  buttonText="SIGNUP WITH GOOGLE"
+                  onSuccess={this.responseGoogle}
+                  onFailure={this.responseGoogle}
+                  autoLoad={false}
+                  style={{
+                    color: "#444",
+                  }}
+                />
 
-              <FacebookLogin
-                appId={process.env.FACEBOOK_APP_ID}
-                autoLoad={false}
-                textButton="SIGNUP WITH FACEBOOK"
-                fields="name,email,picture"
-                callback={this.responseFacebook}
-                size="small"
-                icon="fa-facebook"
-              />
-
+                <FacebookLogin
+                  cssClass="facebook_login"
+                  appId={process.env.FACEBOOK_APP_ID}
+                  autoLoad={false}
+                  textButton="SIGNUP WITH FACEBOOK"
+                  fields="name,email,picture"
+                  callback={this.responseFacebook}
+                  style={{ height: 43 }}
+                  size="medium"
+                  icon="fa-facebook"
+                />
+              </div>
+              <br />
               {error && (
                 <Message negative>
                   <Message.Header>There was some error</Message.Header>
@@ -176,8 +182,8 @@ class SignUp extends Component {
 
               <Form.Button>Submit</Form.Button>
             </Form>
-          </Grid>
-        </Segment>
+          </Segment>
+        </Container>
       </ResponsiveContainer>
     )
   }
