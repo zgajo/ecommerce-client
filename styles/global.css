@@ -79,3 +79,7 @@ body {
   display: flex;
   justify-content: space-between;
 }
+
+.product_attribute_values_button {
+  margin-bottom: 0.25em !important;
+}

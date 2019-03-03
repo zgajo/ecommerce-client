@@ -20,12 +20,13 @@ export default class Product extends Component {
     mainImg: this.props.pageContext.product.image,
     secondaryImg: this.props.pageContext.product.image_2,
     order_detail: {
-      attributes: "",
-      item_id: "",
-      product_id: "",
-      product_name: "",
+      attributes: "{}",
+      product_id: this.props.pageContext.product.product_id,
+      product_name: this.props.pageContext.product.name,
       quantity: 1,
-      unit_cost: "",
+      unit_cost:
+        this.props.pageContext.product.discounted_price ||
+        this.props.pageContext.product.price,
     },
   }
 
@@ -78,6 +79,37 @@ export default class Product extends Component {
       }))
     }
   }
+
+  pickAttributeValue = attribute_value => () => {
+    const { order_detail } = this.state
+
+    let attributes = JSON.parse(order_detail.attributes)
+    attributes = JSON.stringify({
+      ...attributes,
+      [attribute_value.attribute_id]: { ...attribute_value },
+    })
+
+    this.setState(prev => ({
+      ...prev,
+      order_detail: {
+        ...prev.order_detail,
+        attributes,
+      },
+    }))
+  }
+
+  attributeValuePicked = attribute_value => {
+    const { order_detail } = this.state
+
+    let attributes = JSON.parse(order_detail.attributes)
+    return (
+      !!attributes[attribute_value.attribute_id] &&
+      attributes[attribute_value.attribute_id].attribute_value_id ===
+        attribute_value.attribute_value_id
+    )
+  }
+
+  addToBasket = () => {}
 
   render() {
     const {
@@ -134,6 +166,7 @@ export default class Product extends Component {
                         <div className="center_vertically">
                           <Rating
                             as="span"
+                            disabled
                             maxRating={5}
                             defaultRating={avg_rating}
                             icon="star"
@@ -185,8 +218,14 @@ export default class Product extends Component {
                             )
                             .map(atv => (
                               <Button
-                                basic
-                                color="black"
+                                basic={!this.attributeValuePicked(atv)}
+                                color={
+                                  this.attributeValuePicked(atv)
+                                    ? "red"
+                                    : "black"
+                                }
+                                onClick={this.pickAttributeValue(atv)}
+                                className="product_attribute_values_button"
                                 key={`avs_${atv.attribute_value_id}`}
                               >
                                 {atv.value}
