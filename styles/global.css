@@ -74,3 +74,8 @@ body {
 .facebook_login i {
   margin-right: calc(0.34435vw + 3.38843px);
 }
+
+.cart_content_both_sides {
+  display: flex;
+  justify-content: space-between;
+}
