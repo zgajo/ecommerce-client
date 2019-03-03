@@ -1,6 +1,14 @@
 import React, { Component } from "react"
-import { Button, Icon, Label, Popup, Item, Header } from "semantic-ui-react"
-import { decimalNumbersTwoDigits } from "../utils/helpers"
+import {
+  Button,
+  Icon,
+  Label,
+  Popup,
+  Item,
+  Header,
+  Divider,
+} from "semantic-ui-react"
+import { decimalNumbersTwoDigits, round } from "../utils/helpers"
 
 export default class Cart extends Component {
   state = {
@@ -31,7 +39,10 @@ export default class Cart extends Component {
       this.setState(
         prev => ({
           order_details: prev.order_details.map(od => {
-            if (od.product_id === new_order_detail.product_id) {
+            if (
+              od.product_id === new_order_detail.product_id &&
+              od.attributes === new_order_detail.attributes
+            ) {
               return {
                 ...od,
                 quantity:
@@ -80,7 +91,6 @@ export default class Cart extends Component {
 
     return Object.keys(attributes)
       .map(attribute_id => {
-        console.log(attribute_id, attributes[attribute_id].value)
         return attributes[attribute_id].value
       })
       .join(" ")
@@ -88,6 +98,17 @@ export default class Cart extends Component {
 
   render() {
     const { order_details } = this.state
+
+    if (!order_details.length) {
+      return (
+        <Button as="a" style={{ marginLeft: "0.5em" }}>
+          <Icon name="cart" /> Cart
+          <Label color="red" floating>
+            {order_details.length}
+          </Label>
+        </Button>
+      )
+    }
 
     return (
       <Popup
@@ -102,8 +123,9 @@ export default class Cart extends Component {
         flowing
         hoverable
         // open
+        style={{ width: 350 }}
       >
-        <Item.Group divided>
+        <Item.Group divided style={{ maxHeight: 300, overflowY: "auto" }}>
           {order_details.map((od, index) => (
             <Item key={`order_detail_${index}`}>
               <Item.Image
@@ -123,8 +145,8 @@ export default class Cart extends Component {
                   >
                     <Icon name="remove" />
                   </Button>
-                  <Header as="h3" style={{ marginTop: 0 }}>
-                    My Neighbor Totoro asdsadasdasdasasdasd
+                  <Header as="h4" style={{ marginTop: 0 }}>
+                    {od.product_name}
                   </Header>
                 </Item.Extra>
                 <Item.Meta className="cart_content_both_sides center_vertically">
@@ -140,6 +162,39 @@ export default class Cart extends Component {
               </Item.Content>
             </Item>
           ))}
+        </Item.Group>
+        <Divider />
+        <Item.Group divided>
+          <Item>
+            <Item.Content>
+              <Item.Meta className="cart_content_both_sides center_vertically">
+                <span>
+                  {order_details.reduce(
+                    (qty, curr) => (qty += curr.quantity),
+                    0
+                  )}{" "}
+                  item(s)
+                </span>
+                <span className="cinema">
+                  <Header as="h4" color="red">
+                    $
+                    {order_details.reduce((total, od) => {
+                      const product_price = round(od.quantity * od.unit_cost)
+
+                      const new_total = round(total + product_price)
+
+                      return new_total
+                    }, 0)}
+                  </Header>
+                </span>
+              </Item.Meta>
+              <Item.Meta>
+                <Button fluid positive>
+                  Proceed to checkout
+                </Button>
+              </Item.Meta>
+            </Item.Content>
+          </Item>
         </Item.Group>
       </Popup>
     )
