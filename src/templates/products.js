@@ -229,11 +229,6 @@ class Categories extends Component {
                             >
                               <Grid textAlign="center">
                                 <Grid.Row>
-                                  <Button positive>
-                                    <Icon name="shop" /> Add to basket
-                                  </Button>
-                                </Grid.Row>
-                                <Grid.Row>
                                   <Link to={`/product/${product.product_id}`}>
                                     <Button>View more</Button>
                                   </Link>

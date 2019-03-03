@@ -10,6 +10,7 @@ import {
   Label,
   Input,
   Icon,
+  Button,
 } from "semantic-ui-react"
 import { isInteger } from "../utils/helpers"
 import DesktopHeader from "../components/Header"
@@ -18,7 +19,14 @@ export default class Product extends Component {
   state = {
     mainImg: this.props.pageContext.product.image,
     secondaryImg: this.props.pageContext.product.image_2,
-    qty: 1,
+    order_detail: {
+      attributes: "",
+      item_id: "",
+      product_id: "",
+      product_name: "",
+      quantity: 1,
+      unit_cost: "",
+    },
   }
 
   changeMainImg = () => {
@@ -40,22 +48,46 @@ export default class Product extends Component {
     return reviews.reduce((total, curr) => (total += curr.rating), 0)
   }
 
-  increment = () => this.setState(prev => ({ qty: Number(prev.qty) + 1 }))
+  increment = () =>
+    this.setState(prev => ({
+      ...prev,
+      order_detail: {
+        ...prev.order_detail,
+        quantity: Number(prev.order_detail.quantity) + 1,
+      },
+    }))
   decrement = () =>
     this.setState(prev => ({
-      qty: prev.qty > 1 ? Number(prev.qty) - 1 : prev.qty,
+      ...prev,
+      order_detail: {
+        ...prev.order_detail,
+        quantity:
+          prev.order_detail.quantity > 1
+            ? Number(prev.order_detail.quantity) - 1
+            : prev.order_detail.quantity,
+      },
     }))
   onQtyChange = ({ target: { value } }) => {
     if (isInteger(value) && value > 0) {
-      this.setState({ qty: value })
+      this.setState(prev => ({
+        ...prev,
+        order_detail: {
+          ...prev.order_detail,
+          quantity: value,
+        },
+      }))
     }
   }
 
   render() {
     const {
-      pageContext: { product, server_images_folder },
+      pageContext: { product, server_images_folder, attributes },
     } = this.props
-    const { mainImg, secondaryImg, qty } = this.state
+    const {
+      mainImg,
+      secondaryImg,
+      order_detail: { quantity },
+    } = this.state
 
     const avg_rating = this.calculateReviews(product.reviews)
 
@@ -141,8 +173,28 @@ export default class Product extends Component {
                         )) ||
                           ""}
                       </Grid.Column>
-                      <Grid.Column>Color picker</Grid.Column>
-                      <Grid.Column>Size picker</Grid.Column>
+                      {attributes.map(attribute => (
+                        <Grid.Column
+                          key={`attribute_${attribute.attribute_id}`}
+                        >
+                          <Header as="h5">{attribute.name}:</Header>
+
+                          {product.product_attribute_values
+                            .filter(
+                              atv => atv.attribute_id === attribute.attribute_id
+                            )
+                            .map(atv => (
+                              <Button
+                                basic
+                                color="black"
+                                key={`avs_${atv.attribute_value_id}`}
+                              >
+                                {atv.value}
+                              </Button>
+                            ))}
+                        </Grid.Column>
+                      ))}
+
                       <Grid.Column>
                         <label className="label">QTY: </label>
                         <Input
@@ -154,7 +206,7 @@ export default class Product extends Component {
                             <Icon name="minus" className="label_amount" />
                           </Label>
                           <input
-                            value={qty}
+                            value={quantity}
                             style={{ textAlign: "center" }}
                             onChange={this.onQtyChange}
                           />
@@ -163,7 +215,11 @@ export default class Product extends Component {
                           </Label>
                         </Input>
                       </Grid.Column>
-                      <Grid.Column>Add to cart</Grid.Column>
+                      <Grid.Column>
+                        <Button positive>
+                          <Icon name="shop" /> Add to basket
+                        </Button>
+                      </Grid.Column>
                     </Grid.Row>
                   </Grid>
                 </Grid.Column>

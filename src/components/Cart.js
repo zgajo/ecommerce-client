@@ -2,7 +2,9 @@ import React, { Component } from "react"
 import { Button, Icon, Label, Popup, Item, Header } from "semantic-ui-react"
 
 export default class Cart extends Component {
-  state = {}
+  state = {
+    order: [],
+  }
 
   addToCart = () => {}
   removeFromCart = () => {}
@@ -20,7 +22,7 @@ export default class Cart extends Component {
         }
         flowing
         hoverable
-        open
+        // open
       >
         <Item.Group divided>
           <Item>

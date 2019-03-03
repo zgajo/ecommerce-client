@@ -18,6 +18,10 @@ exports.createPages = ({ graphql, actions }) => {
           category_id
           name
         }
+        attributes {
+          attribute_id
+          name
+        }
         products {
           product_id
           name
@@ -40,6 +44,8 @@ exports.createPages = ({ graphql, actions }) => {
           }
           product_attribute_values {
             attribute_value_id
+            attribute_id
+            value
           }
           reviews {
             review_id
@@ -80,6 +86,7 @@ exports.createPages = ({ graphql, actions }) => {
           product: product,
           server_images_folder:
             result.data.site.siteMetadata.server_images_folder,
+          attributes: result.data.ecommerce.attributes,
         },
       })
     })
