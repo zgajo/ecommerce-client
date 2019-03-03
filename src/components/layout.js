@@ -7,12 +7,10 @@ import {
   Responsive,
   Segment,
   Sidebar,
-  Visibility,
 } from "semantic-ui-react"
 
 import Footer from "./Footer"
 import HomepageHeading from "./HomepageHeading"
-import DesktopHeader from "./Header"
 import MobileSidebar from "./MobileSidebar"
 import Cart from "./Cart"
 
@@ -30,14 +28,8 @@ const getWidth = () => {
  * It can be more complicated, but you can create really flexible markup.
  */
 class DesktopContainer extends Component {
-  state = {}
-
-  hideFixedMenu = () => this.setState({ fixed: false })
-  showFixedMenu = () => this.setState({ fixed: true })
-
   render() {
-    const { children, indexPage } = this.props
-    const { fixed } = this.state
+    const { children, header } = this.props
 
     return (
       <Responsive
@@ -45,13 +37,7 @@ class DesktopContainer extends Component {
         minWidth={Responsive.onlyTablet.minWidth}
         id="Site"
       >
-        <Visibility
-          once={false}
-          onBottomPassed={this.showFixedMenu}
-          onBottomPassedReverse={this.hideFixedMenu}
-        >
-          <DesktopHeader fixed={fixed} indexPage={indexPage} />
-        </Visibility>
+        {header}
 
         <div id="Site-content">{children}</div>
 
@@ -119,10 +105,10 @@ MobileContainer.propTypes = {
   children: PropTypes.node,
 }
 
-const ResponsiveContainer = ({ children, indexPage }) => (
+const ResponsiveContainer = ({ children, ...rest }) => (
   <div>
-    <DesktopContainer indexPage={indexPage}>{children}</DesktopContainer>
-    <MobileContainer indexPage={indexPage}>{children}</MobileContainer>
+    <DesktopContainer {...rest}>{children}</DesktopContainer>
+    <MobileContainer {...rest}>{children}</MobileContainer>
   </div>
 )
 

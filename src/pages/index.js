@@ -10,9 +10,10 @@ import {
   Image,
   Segment,
 } from "semantic-ui-react"
+import DesktopHeader from "../components/Header"
 
 const HomepageLayout = () => (
-  <ResponsiveContainer indexPage>
+  <ResponsiveContainer header={<DesktopHeader indexPage />}>
     <Segment style={{ padding: "8em 0em" }} vertical>
       <Grid container stackable verticalAlign="middle">
         <Grid.Row>

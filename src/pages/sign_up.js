@@ -10,6 +10,7 @@ import styles from "./sign_up.module.css"
 import { client } from "../apollo"
 import { signupCustomerWithGoogle } from "../apollo/mutation"
 import { asyncAction, formatErrors } from "../utils/helpers"
+import DesktopHeader from "../components/Header"
 
 const options = [
   { key: "m", text: "Male", value: "male" },
@@ -67,7 +68,7 @@ class SignUp extends Component {
     const { error } = this.state
 
     return (
-      <ResponsiveContainer>
+      <ResponsiveContainer header={<DesktopHeader />}>
         <Helmet>
           <script src="https://apis.google.com/js/platform.js" async defer />
           <meta

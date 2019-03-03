@@ -13,6 +13,7 @@ import {
 import { ResponsiveContainer } from "../../components/layout"
 
 import styles from "./index.module.css"
+import DesktopHeader from "../../components/Header"
 
 class Categories extends Component {
   state = {}
@@ -38,7 +39,7 @@ class Categories extends Component {
     const { data } = this.props
 
     return (
-      <ResponsiveContainer>
+      <ResponsiveContainer header={<DesktopHeader />}>
         <Segment style={{ padding: "4em 0em" }} vertical>
           <Grid container stackable verticalAlign="middle">
             <Grid>

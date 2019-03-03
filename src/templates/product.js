@@ -12,6 +12,7 @@ import {
   Icon,
 } from "semantic-ui-react"
 import { isInteger } from "../utils/helpers"
+import DesktopHeader from "../components/Header"
 
 export default class Product extends Component {
   state = {
@@ -59,7 +60,7 @@ export default class Product extends Component {
     const avg_rating = this.calculateReviews(product.reviews)
 
     return (
-      <ResponsiveContainer>
+      <ResponsiveContainer header={<DesktopHeader />}>
         <Container style={{ padding: "2em 0em" }} textAlign="center">
           <Segment>
             <Grid columns="equal">

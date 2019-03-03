@@ -15,6 +15,7 @@ import { client } from "../apollo"
 import { categoryProducts } from "../apollo/query"
 import { formatErrors, asyncAction } from "../utils/helpers"
 import CategorySidebar from "../components/CategorySidebar"
+import DesktopHeader from "../components/Header"
 
 class Categories extends Component {
   state = {
@@ -174,7 +175,7 @@ class Categories extends Component {
     const { server_images_folder } = this.props.data.site.siteMetadata
 
     return (
-      <ResponsiveContainer>
+      <ResponsiveContainer header={<DesktopHeader />}>
         <Segment style={{ padding: "4em 0em" }} vertical>
           <Grid container stackable verticalAlign="middle">
             <Grid>
