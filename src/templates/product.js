@@ -30,6 +30,16 @@ export default class Product extends Component {
     },
   }
 
+  initialOrderDetail = {
+    attributes: "{}",
+    product_id: this.props.pageContext.product.product_id,
+    product_name: this.props.pageContext.product.name,
+    quantity: 1,
+    unit_cost:
+      this.props.pageContext.product.discounted_price ||
+      this.props.pageContext.product.price,
+  }
+
   changeMainImg = () => {
     const {
       pageContext: { product },
@@ -134,6 +144,12 @@ export default class Product extends Component {
     }
 
     return false
+  }
+
+  addToBasket = () => {
+    this.setState({
+      order_detail: { ...this.initialOrderDetail },
+    })
   }
 
   render() {

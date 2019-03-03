@@ -3,7 +3,10 @@ import { Button, Icon, Label, Popup, Item, Header } from "semantic-ui-react"
 
 export default class Cart extends Component {
   state = {
-    order: [],
+    order: {
+      order_details: [],
+      total_amount: "0.00",
+    },
   }
 
   addToCart = () => {}
