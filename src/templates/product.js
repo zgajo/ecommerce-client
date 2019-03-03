@@ -12,7 +12,7 @@ import {
   Icon,
   Button,
 } from "semantic-ui-react"
-import { isInteger } from "../utils/helpers"
+import { isInteger, removeDuplicateInts } from "../utils/helpers"
 import DesktopHeader from "../components/Header"
 
 export default class Product extends Component {
@@ -109,7 +109,32 @@ export default class Product extends Component {
     )
   }
 
-  addToBasket = () => {}
+  addToBasketIsDisabled = () => {
+    const { product_attribute_values } = this.props.pageContext.product
+    const { order_detail } = this.state
+
+    let attributes = JSON.parse(order_detail.attributes)
+
+    // all product atrributes
+    const product_attributes = removeDuplicateInts(
+      product_attribute_values.map(({ attribute_id }) => attribute_id)
+    )
+    // all picked
+    const picked_product_attributes = Object.keys(attributes)
+
+    if (picked_product_attributes.length < product_attributes.length)
+      return true
+
+    // check every element
+    var arr1 = product_attributes.concat().sort()
+    var arr2 = picked_product_attributes.concat().sort()
+
+    for (var i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) return true
+    }
+
+    return false
+  }
 
   render() {
     const {
@@ -255,7 +280,11 @@ export default class Product extends Component {
                         </Input>
                       </Grid.Column>
                       <Grid.Column>
-                        <Button positive>
+                        <Button
+                          positive
+                          onClick={this.addToBasket}
+                          disabled={this.addToBasketIsDisabled()}
+                        >
                           <Icon name="shop" /> Add to basket
                         </Button>
                       </Grid.Column>

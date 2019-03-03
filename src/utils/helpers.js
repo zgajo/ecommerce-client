@@ -16,3 +16,11 @@ export const formatErrors = (error, state) => {
 }
 
 export const isInteger = num => /^[0-9]\d*$/.test(num)
+
+export const uniqueObjects = (arr, key) =>
+  arr.filter(
+    (obj_1, i) => arr.findIndex(obj_2 => obj_2[key] === obj_1[key]) === i
+  )
+
+export const removeDuplicateInts = arr =>
+  arr.filter((a, i) => arr.findIndex(b => a === b) === i)
