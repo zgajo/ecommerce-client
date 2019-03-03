@@ -24,3 +24,10 @@ export const uniqueObjects = (arr, key) =>
 
 export const removeDuplicateInts = arr =>
   arr.filter((a, i) => arr.findIndex(b => a === b) === i)
+
+export const round = value => {
+  return Number(Math.round(value + "e2") + "e-2")
+}
+
+export const decimalNumbersTwoDigits = num =>
+  Number(Number(Math.round(num + "e2") + "e-2")).toFixed(2)

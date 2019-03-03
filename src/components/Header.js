@@ -19,7 +19,7 @@ class DesktopHeader extends Component {
   showFixedMenu = () => this.setState({ fixed: true })
 
   render() {
-    const { indexPage } = this.props
+    const { indexPage, setCartAddToBasket } = this.props
     const { fixed } = this.props
 
     return (
@@ -111,7 +111,7 @@ class DesktopHeader extends Component {
                       Sign Up
                     </Button>
 
-                    <Cart />
+                    <Cart setCartAddToBasket={setCartAddToBasket} />
                   </Menu.Item>
                 </Container>
               </Menu>

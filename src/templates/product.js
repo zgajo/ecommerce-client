@@ -146,7 +146,16 @@ export default class Product extends Component {
     return false
   }
 
+  cartAddToBasket = () => {}
+
+  // Passing function from cart to insert new item
+  setCartAddToBasket = fun => {
+    this.cartAddToBasket = fun
+  }
+
   addToBasket = () => {
+    this.cartAddToBasket(this.state.order_detail)
+
     this.setState({
       order_detail: { ...this.initialOrderDetail },
     })
@@ -165,7 +174,9 @@ export default class Product extends Component {
     const avg_rating = this.calculateReviews(product.reviews)
 
     return (
-      <ResponsiveContainer header={<DesktopHeader />}>
+      <ResponsiveContainer
+        header={<DesktopHeader setCartAddToBasket={this.setCartAddToBasket} />}
+      >
         <Container style={{ padding: "2em 0em" }} textAlign="center">
           <Segment>
             <Grid columns="equal">
