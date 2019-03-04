@@ -19,11 +19,7 @@ import { signupCustomerWithGoogle, signupCustomer } from "../apollo/mutation"
 import { asyncAction, formatErrors } from "../utils/helpers"
 import DesktopHeader from "../components/Header"
 import { SignupCustomerSchema } from "../utils/validation"
-
-const options = [
-  { key: "m", text: "Male", value: "male" },
-  { key: "f", text: "Female", value: "female" },
-]
+import { graphql } from "gatsby"
 
 class SignUp extends Component {
   state = {
@@ -73,6 +69,11 @@ class SignUp extends Component {
   }
 
   render() {
+    const {
+      data: {
+        ecommerce: { shipping_regions },
+      },
+    } = this.props
     const { error } = this.state
 
     return (
@@ -122,21 +123,20 @@ class SignUp extends Component {
             <Formik
               initialValues={this.state.customer}
               validationSchema={SignupCustomerSchema}
-              onSubmit={async (values, { setError, setSubmitting }) => {
-                // const [err, data] = asyncAction(
-                //   client.mutate({
-                //     mutation: signupCustomer,
-                //     variables: values,
-                //   })
-                // )
+              onSubmit={async (
+                values,
+                { setSubmitting, setStatus, resetForm }
+              ) => {
+                const [, response] = await asyncAction(
+                  client.mutate({
+                    mutation: signupCustomer,
+                    variables: values,
+                  })
+                )
 
-                // const { message, success } = data.signupCustomer
-
-                setTimeout(() => {
-                  setSubmitting(false)
-                }, 5000)
-
-                setError("Ali abdulrahman")
+                setSubmitting(false)
+                resetForm()
+                setStatus(response.data.signupCustomer)
               }}
               render={({
                 values,
@@ -152,7 +152,7 @@ class SignUp extends Component {
               }) => (
                 <Form className={styles.form_width} onSubmit={handleSubmit}>
                   <br />
-                  {console.log(errors)}
+                  {console.log(status)}
                   <Form.Group widths="equal">
                     <Form.Field>
                       <Form.Input
@@ -163,9 +163,9 @@ class SignUp extends Component {
                         value={values.name}
                         placeholder="Name"
                         name="name"
-                        error={!!errors.name}
+                        error={!!errors.name && touched.name}
                       />
-                      {errors.name && (
+                      {errors.name && touched.name && (
                         <Label basic color="red" pointing>
                           {errors.name}
                         </Label>
@@ -182,9 +182,9 @@ class SignUp extends Component {
                         onChange={handleChange}
                         value={values.email}
                         placeholder="email@example.com"
-                        error={!!errors.email}
+                        error={!!errors.email && touched.email}
                       />
-                      {errors.email && (
+                      {errors.email && touched.email && (
                         <Label basic color="red" pointing>
                           {errors.email}
                         </Label>
@@ -202,9 +202,9 @@ class SignUp extends Component {
                         label="Password"
                         type="password"
                         placeholder="Password"
-                        error={!!errors.password}
+                        error={!!errors.password && touched.password}
                       />
-                      {errors.password && (
+                      {errors.password && touched.password && (
                         <Label basic color="red" pointing>
                           {errors.password}
                         </Label>
@@ -221,10 +221,12 @@ class SignUp extends Component {
                         value={values.password_confirm}
                         type="password"
                         placeholder="Password"
-                        error={!!errors.password_confirm}
+                        error={
+                          !!errors.password_confirm && touched.password_confirm
+                        }
                       />
 
-                      {errors.password_confirm && (
+                      {errors.password_confirm && touched.password_confirm && (
                         <Label basic color="red" pointing>
                           {errors.password_confirm}
                         </Label>
@@ -240,9 +242,9 @@ class SignUp extends Component {
                         onChange={handleChange}
                         label="Credit card"
                         placeholder="Credit card no."
-                        error={!!errors.credit_card}
+                        error={!!errors.credit_card && touched.credit_card}
                       />
-                      {errors.credit_card && (
+                      {errors.credit_card && touched.credit_card && (
                         <Label basic color="red" pointing>
                           {errors.credit_card}
                         </Label>
@@ -310,17 +312,22 @@ class SignUp extends Component {
                         name="shipping_region_id"
                         value={values.shipping_region_id}
                         onChange={(e, { value }) => {
-                          console.log(value)
                           setFieldValue("shipping_region_id", value)
                         }}
                         required
                         selection
                         label="Shipping region"
-                        options={options}
+                        options={shipping_regions.map(sr => ({
+                          text: sr.shipping_region,
+                          value: sr.shipping_region_id,
+                        }))}
                         placeholder="Shipping region"
-                        error={!!errors.shipping_region_id}
+                        error={
+                          !!errors.shipping_region_id &&
+                          touched.shipping_region_id
+                        }
                       />
-                      {errors.shipping_region_id && (
+                      {errors.shipping_region_id && touched.shipping_region_id && (
                         <Label basic color="red" pointing>
                           {errors.shipping_region_id}
                         </Label>
@@ -363,12 +370,14 @@ class SignUp extends Component {
                     </Form.Field>
                   </Form.Group>
 
-                  {error && (
-                    <Message negative size="tiny" style={{ width: "auto" }}>
-                      <Message.Header>
-                        We're sorry we can't apply that discount
-                      </Message.Header>
-                      <p>{error}</p>
+                  {status && (
+                    <Message
+                      negative={!status.success}
+                      positive={status.success}
+                      size="tiny"
+                      style={{ width: "auto" }}
+                    >
+                      <Message.Header>{status.message}</Message.Header>
                     </Message>
                   )}
 
@@ -398,3 +407,14 @@ class SignUp extends Component {
 }
 
 export default SignUp
+
+export const query = graphql`
+  query {
+    ecommerce {
+      shipping_regions {
+        shipping_region_id
+        shipping_region
+      }
+    }
+  }
+`
