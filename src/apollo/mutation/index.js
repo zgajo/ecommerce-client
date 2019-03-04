@@ -5,3 +5,46 @@ export const signupCustomerWithGoogle = gql`
     signupCustomerGoogle(googleAuthToken: $googleAuthToken)
   }
 `
+
+export const signupCustomer = gql`
+  mutation(
+    $name: String!
+    $email: String!
+    $password: String!
+    $password_confirm: String!
+    $shipping_region_id: ID!
+    $credit_card: String
+    $address_1: String
+    $address_2: String
+    $city: String
+    $region: String
+    $postal_code: String
+    $country: String
+    $day_phone: String
+    $eve_phone: String
+    $mob_phone: String
+  ) {
+    signupCustomer(
+      input: {
+        name: $name
+        email: $email
+        password: $password
+        password_confirm: $password_confirm
+        shipping_region_id: $shipping_region_id
+        credit_card: $credit_card
+        address_1: $address_1
+        address_2: $address_2
+        city: $city
+        region: $region
+        postal_code: $postal_code
+        country: $country
+        day_phone: $day_phone
+        eve_phone: $eve_phone
+        mob_phone: $mob_phone
+      }
+    ) {
+      message
+      success
+    }
+  }
+`

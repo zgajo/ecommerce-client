@@ -1,5 +1,12 @@
 import React, { Component } from "react"
-import { Form, Input, Segment, Message, Container } from "semantic-ui-react"
+import {
+  Form,
+  Input,
+  Segment,
+  Message,
+  Container,
+  Label,
+} from "semantic-ui-react"
 import { GoogleLogin } from "react-google-login"
 import FacebookLogin from "react-facebook-login"
 import { Helmet } from "react-helmet"
@@ -8,9 +15,10 @@ import { Formik } from "formik"
 import { ResponsiveContainer } from "../components/layout"
 import styles from "./sign_up.module.css"
 import { client } from "../apollo"
-import { signupCustomerWithGoogle } from "../apollo/mutation"
+import { signupCustomerWithGoogle, signupCustomer } from "../apollo/mutation"
 import { asyncAction, formatErrors } from "../utils/helpers"
 import DesktopHeader from "../components/Header"
+import { SignupCustomerSchema } from "../utils/validation"
 
 const options = [
   { key: "m", text: "Male", value: "male" },
@@ -113,9 +121,26 @@ class SignUp extends Component {
 
             <Formik
               initialValues={this.state.customer}
-              handleChange={this.changeField}
+              validationSchema={SignupCustomerSchema}
+              onSubmit={async (values, { setError, setSubmitting }) => {
+                // const [err, data] = asyncAction(
+                //   client.mutate({
+                //     mutation: signupCustomer,
+                //     variables: values,
+                //   })
+                // )
+
+                // const { message, success } = data.signupCustomer
+
+                setTimeout(() => {
+                  setSubmitting(false)
+                }, 5000)
+
+                setError("Ali abdulrahman")
+              }}
               render={({
                 values,
+                error,
                 errors,
                 status,
                 touched,
@@ -125,61 +150,104 @@ class SignUp extends Component {
                 handleSubmit,
                 isSubmitting,
               }) => (
-                <Form className={styles.form_width}>
+                <Form className={styles.form_width} onSubmit={handleSubmit}>
                   <br />
-
+                  {console.log(errors)}
                   <Form.Group widths="equal">
-                    <Form.Input
-                      fluid
-                      label="Name"
-                      required
-                      onChange={handleChange}
-                      value={values.name}
-                      placeholder="Name"
-                      name="name"
-                    />
-                    <Form.Input
-                      fluid
-                      required
-                      label="Email"
-                      type="email"
-                      name="email"
-                      onChange={handleChange}
-                      value={values.email}
-                      placeholder="email@example.com"
-                    />
+                    <Form.Field>
+                      <Form.Input
+                        fluid
+                        label="Name"
+                        required
+                        onChange={handleChange}
+                        value={values.name}
+                        placeholder="Name"
+                        name="name"
+                        error={!!errors.name}
+                      />
+                      {errors.name && (
+                        <Label basic color="red" pointing>
+                          {errors.name}
+                        </Label>
+                      )}
+                    </Form.Field>
+
+                    <Form.Field>
+                      <Form.Input
+                        fluid
+                        required
+                        label="Email"
+                        type="email"
+                        name="email"
+                        onChange={handleChange}
+                        value={values.email}
+                        placeholder="email@example.com"
+                        error={!!errors.email}
+                      />
+                      {errors.email && (
+                        <Label basic color="red" pointing>
+                          {errors.email}
+                        </Label>
+                      )}
+                    </Form.Field>
                   </Form.Group>
                   <Form.Group widths="equal">
-                    <Form.Input
-                      fluid
-                      required
-                      name="password"
-                      value={values.password}
-                      onChange={handleChange}
-                      label="Password"
-                      type="password"
-                      placeholder="Password"
-                    />
-                    <Form.Input
-                      fluid
-                      required
-                      label="Confirm password"
-                      name="password_confirm"
-                      onChange={handleChange}
-                      value={values.password_confirm}
-                      type="password"
-                      placeholder="Password"
-                    />
+                    <Form.Field>
+                      <Form.Input
+                        fluid
+                        required
+                        name="password"
+                        value={values.password}
+                        onChange={handleChange}
+                        label="Password"
+                        type="password"
+                        placeholder="Password"
+                        error={!!errors.password}
+                      />
+                      {errors.password && (
+                        <Label basic color="red" pointing>
+                          {errors.password}
+                        </Label>
+                      )}
+                    </Form.Field>
+
+                    <Form.Field>
+                      <Form.Input
+                        fluid
+                        required
+                        label="Confirm password"
+                        name="password_confirm"
+                        onChange={handleChange}
+                        value={values.password_confirm}
+                        type="password"
+                        placeholder="Password"
+                        error={!!errors.password_confirm}
+                      />
+
+                      {errors.password_confirm && (
+                        <Label basic color="red" pointing>
+                          {errors.password_confirm}
+                        </Label>
+                      )}
+                    </Form.Field>
                   </Form.Group>
                   <Form.Group widths="2">
-                    <Form.Input
-                      fluid
-                      name="credit_card"
-                      value={values.credit_card}
-                      onChange={handleChange}
-                      label="Credit card"
-                      placeholder="Credit card no."
-                    />
+                    <Form.Field>
+                      <Form.Input
+                        fluid
+                        name="credit_card"
+                        value={values.credit_card}
+                        onChange={handleChange}
+                        label="Credit card"
+                        placeholder="Credit card no."
+                        error={!!errors.credit_card}
+                      />
+                      {errors.credit_card && (
+                        <Label basic color="red" pointing>
+                          {errors.credit_card}
+                        </Label>
+                      )}
+                    </Form.Field>
                   </Form.Group>
                   <Form.Group widths="equal">
                     <Form.Input
@@ -236,19 +304,28 @@ class SignUp extends Component {
                     />
                   </Form.Group>
                   <Form.Group widths="2">
-                    <Form.Select
-                      fluid
-                      name="shipping_region_id"
-                      value={values.shipping_region_id}
-                      onChange={(e, { value }) =>
-                        setFieldValue("shipping_region_id", value)
-                      }
-                      required
-                      selection
-                      label="Shipping region"
-                      options={options}
-                      placeholder="Shipping region"
-                    />
+                    <Form.Field>
+                      <Form.Select
+                        fluid
+                        name="shipping_region_id"
+                        value={values.shipping_region_id}
+                        onChange={(e, { value }) => {
+                          console.log(value)
+                          setFieldValue("shipping_region_id", value)
+                        }}
+                        required
+                        selection
+                        label="Shipping region"
+                        options={options}
+                        placeholder="Shipping region"
+                        error={!!errors.shipping_region_id}
+                      />
+                      {errors.shipping_region_id && (
+                        <Label basic color="red" pointing>
+                          {errors.shipping_region_id}
+                        </Label>
+                      )}
+                    </Form.Field>
                   </Form.Group>
                   <Form.Group widths="equal">
                     <Form.Field>
@@ -286,7 +363,30 @@ class SignUp extends Component {
                     </Form.Field>
                   </Form.Group>
 
-                  <Form.Button>Submit</Form.Button>
+                  {error && (
+                    <Message negative size="tiny" style={{ width: "auto" }}>
+                      <Message.Header>
+                        We're sorry we can't apply that discount
+                      </Message.Header>
+                      <p>{error}</p>
+                    </Message>
+                  )}
+
+                  {!isSubmitting && (
+                    <Form.Button
+                      type="button"
+                      onClick={handleSubmit}
+                      disabled={isSubmitting}
+                    >
+                      Submit
+                    </Form.Button>
+                  )}
+
+                  {isSubmitting && (
+                    <Form.Button type="button" loading disabled={!isSubmitting}>
+                      Submit
+                    </Form.Button>
+                  )}
                 </Form>
               )}
             />
