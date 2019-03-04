@@ -4111,6 +4111,11 @@ gatsby-plugin-react-helmet@^3.0.7:
   dependencies:
     "@babel/runtime" "^7.0.0"
 
+gatsby-plugin-stripe-checkout@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-stripe-checkout/-/gatsby-plugin-stripe-checkout-1.1.2.tgz#51d8d1aed7eaedea397a4693605edb80f2fdee4c"
+  integrity sha512-+91PFxd6ZZ6dn1Nlb4ACapljeTd7gZ4/2OgYJu7+NSAV0dWBntoCf8XOdKhRnCfkHuhOU3mftQ/EABr3fp37+g==
+
 gatsby-react-router-scroll@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/gatsby-react-router-scroll/-/gatsby-react-router-scroll-2.0.4.tgz#d13d8b2a6c076338f17e331c52075d78b059e9bc"

@@ -11,6 +11,7 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-stripe-checkout`,
 
     {
       resolve: "gatsby-source-graphql",

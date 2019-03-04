@@ -21,6 +21,7 @@
     "formik": "^1.5.1",
     "gatsby": "^2.1.18",
     "gatsby-plugin-react-helmet": "^3.0.7",
+    "gatsby-plugin-stripe-checkout": "^1.1.2",
     "gatsby-source-graphql": "^2.0.10",
     "graphql-tag": "^2.10.1",
     "jwt-decode": "^2.2.0",

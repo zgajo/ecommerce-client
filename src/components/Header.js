@@ -7,8 +7,6 @@ import {
   Segment,
   Dropdown,
   Visibility,
-  List,
-  Header,
 } from "semantic-ui-react"
 import HomepageHeading from "./HomepageHeading"
 import Cart from "./Cart"

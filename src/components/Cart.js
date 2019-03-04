@@ -9,6 +9,7 @@ import {
   Divider,
 } from "semantic-ui-react"
 import { decimalNumbersTwoDigits, round } from "../utils/helpers"
+import BuyButton from "./BuyButton"
 
 export default class Cart extends Component {
   state = {
@@ -110,6 +111,21 @@ export default class Cart extends Component {
       )
     }
 
+    const total_items = order_details.reduce(
+      (qty, curr) => (qty += curr.quantity),
+      0
+    )
+
+    const total_price = decimalNumbersTwoDigits(
+      order_details.reduce((total, od) => {
+        const product_price = round(od.quantity * od.unit_cost)
+
+        const new_total = round(total + product_price)
+
+        return new_total
+      }, 0)
+    )
+
     return (
       <Popup
         trigger={
@@ -168,30 +184,18 @@ export default class Cart extends Component {
           <Item>
             <Item.Content>
               <Item.Meta className="cart_content_both_sides center_vertically">
-                <span>
-                  {order_details.reduce(
-                    (qty, curr) => (qty += curr.quantity),
-                    0
-                  )}{" "}
-                  item(s)
-                </span>
+                <span>{total_items} item(s)</span>
                 <span className="cinema">
                   <Header as="h4" color="red">
-                    $
-                    {order_details.reduce((total, od) => {
-                      const product_price = round(od.quantity * od.unit_cost)
-
-                      const new_total = round(total + product_price)
-
-                      return new_total
-                    }, 0)}
+                    ${total_price}
                   </Header>
                 </span>
               </Item.Meta>
               <Item.Meta>
-                <Button fluid positive>
-                  Proceed to checkout
-                </Button>
+                <BuyButton
+                  total_items={total_items}
+                  total_price={total_price}
+                />
               </Item.Meta>
             </Item.Content>
           </Item>
