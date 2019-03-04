@@ -1,6 +1,5 @@
-import React, { Component } from "react"
+import React, { Component, Fragment } from "react"
 import { graphql, StaticQuery, navigate } from "gatsby"
-
 import {
   Button,
   Container,
@@ -8,9 +7,12 @@ import {
   Segment,
   Dropdown,
   Visibility,
+  List,
+  Header,
 } from "semantic-ui-react"
 import HomepageHeading from "./HomepageHeading"
 import Cart from "./Cart"
+import { isAuth } from "../utils/helpers"
 
 class DesktopHeader extends Component {
   state = {}
@@ -97,28 +99,42 @@ class DesktopHeader extends Component {
                   </Dropdown>
 
                   <Menu.Item position="right">
-                    <Button
-                      as="a"
-                      inverted={!fixed}
-                      onClick={() =>
-                        navigate(data.site.siteMetadata.login_slug)
-                      }
-                    >
-                      Log in
-                    </Button>
-                    <Button
-                      onClick={() =>
-                        navigate(data.site.siteMetadata.sign_up_slug)
-                      }
-                      as="a"
-                      inverted={!fixed}
-                      primary={fixed}
-                      style={{ marginLeft: "0.5em" }}
-                    >
-                      Sign Up
-                    </Button>
+                    {!isAuth() && (
+                      <Fragment>
+                        <Button
+                          as="a"
+                          inverted={!fixed}
+                          onClick={() =>
+                            navigate(data.site.siteMetadata.login_slug)
+                          }
+                        >
+                          Log in
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            navigate(data.site.siteMetadata.sign_up_slug)
+                          }
+                          as="a"
+                          inverted={!fixed}
+                          primary={fixed}
+                          style={{ marginLeft: "0.5em" }}
+                        >
+                          Sign Up
+                        </Button>
+                      </Fragment>
+                    )}
 
                     <Cart setCartAddToBasket={setCartAddToBasket} />
+                    {isAuth() && (
+                      <Button
+                        as="a"
+                        inverted
+                        basic
+                        style={{ marginLeft: "0.25em" }}
+                      >
+                        Logout
+                      </Button>
+                    )}
                   </Menu.Item>
                 </Container>
               </Menu>
