@@ -31,6 +31,7 @@ class DesktopHeader extends Component {
                 sign_up_slug
                 homepage_slug
                 category_slug
+                login_slug
               }
             }
             ecommerce {
@@ -96,7 +97,13 @@ class DesktopHeader extends Component {
                   </Dropdown>
 
                   <Menu.Item position="right">
-                    <Button as="a" inverted={!fixed}>
+                    <Button
+                      as="a"
+                      inverted={!fixed}
+                      onClick={() =>
+                        navigate(data.site.siteMetadata.login_slug)
+                      }
+                    >
                       Log in
                     </Button>
                     <Button

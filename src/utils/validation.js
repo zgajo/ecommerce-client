@@ -30,3 +30,10 @@ export const SignupCustomerSchema = Yup.object().shape({
     .integer()
     .required("Required"),
 })
+
+export const LoginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Invalid email")
+    .required("Required"),
+  password: Yup.string().required("Required"),
+})

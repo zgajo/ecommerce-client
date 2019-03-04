@@ -48,3 +48,22 @@ export const signupCustomer = gql`
     }
   }
 `
+
+export const signupCustomerConfirm = gql`
+  mutation($token: String!) {
+    signupCustomerConfirm(token: $token) {
+      message
+      success
+    }
+  }
+`
+
+export const loginCustomer = gql`
+  mutation($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      message
+      success
+      token
+    }
+  }
+`
