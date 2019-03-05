@@ -187,7 +187,7 @@ export default class Product extends Component {
                       <Grid.Column>
                         <Image
                           src={`${
-                            process.env.SERVER_URL
+                            process.env.GATSBY_SERVER_URL
                           }${server_images_folder}/${mainImg}`}
                           as="img"
                           className="product_main_image"
@@ -200,7 +200,7 @@ export default class Product extends Component {
                       <Grid.Column>
                         <Image
                           src={`${
-                            process.env.SERVER_URL
+                            process.env.GATSBY_SERVER_URL
                           }${server_images_folder}/${secondaryImg}`}
                           as="img"
                           className="product_secondary_image"

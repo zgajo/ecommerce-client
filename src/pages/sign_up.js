@@ -82,7 +82,7 @@ class SignUp extends Component {
           <script src="https://apis.google.com/js/platform.js" async defer />
           <meta
             name="google-signin-client_id"
-            content={process.env.GOOGLE_CLIENT_ID}
+            content={process.env.GATSBY_GOOGLE_CLIENT_ID}
           />
 
           <title>My Title</title>
@@ -91,7 +91,7 @@ class SignUp extends Component {
           <Segment>
             <div className="center_vertically">
               <GoogleLogin
-                clientId={process.env.GOOGLE_CLIENT_ID} //CLIENTID NOT CREATED YET
+                clientId={process.env.GATSBY_GOOGLE_CLIENT_ID} //CLIENTID NOT CREATED YET
                 buttonText="SIGNUP WITH GOOGLE"
                 onSuccess={this.responseGoogle}
                 onFailure={this.responseGoogle}
@@ -103,7 +103,7 @@ class SignUp extends Component {
 
               <FacebookLogin
                 cssClass="facebook_login"
-                appId={process.env.FACEBOOK_APP_ID}
+                appId={process.env.GATSBY_FACEBOOK_APP_ID}
                 autoLoad={false}
                 textButton="SIGNUP WITH FACEBOOK"
                 fields="name,email,picture"

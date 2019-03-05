@@ -84,7 +84,7 @@ class Categories extends Component {
                               <Image
                                 fluid={true}
                                 src={`${
-                                  process.env.SERVER_URL
+                                  process.env.GATSBY_SERVER_URL
                                 }/product_images/${product.image}`}
                               />
                               <Card.Content>

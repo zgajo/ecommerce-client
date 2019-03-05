@@ -4,7 +4,7 @@ import { Button } from "semantic-ui-react"
 export default class BuyButton extends Component {
   componentDidMount = () => {
     this.stripe = window.StripeCheckout.configure({
-      key: process.env.STRIPE_API_TEST_KEY,
+      key: process.env.GATSBY_STRIPE_API_TEST_KEY,
       image: "https://stripe.com/img/documentation/checkout/marketplace.png",
       locale: "auto",
 

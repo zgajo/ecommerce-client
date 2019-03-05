@@ -1,3 +1,4 @@
+import "isomorphic-unfetch"
 import { ApolloClient } from "apollo-client"
 import { HttpLink } from "apollo-link-http"
 import { from /* split */ } from "apollo-link"
@@ -7,7 +8,7 @@ import { InMemoryCache } from "apollo-cache-inmemory"
 import { getTokenMiddleware, setTokenAfterware } from "./token"
 
 const httpLink = new HttpLink({
-  uri: `${process.env.SERVER_URL}`,
+  uri: `${process.env.GATSBY_SERVER_URL}`,
 })
 
 const cache = new InMemoryCache()

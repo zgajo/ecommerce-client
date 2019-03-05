@@ -36,7 +36,9 @@ export const decimalNumbersTwoDigits = num =>
 
 export const isAuth = () => {
   try {
-    const token = localStorage.getItem("authorization")
+    const token =
+      typeof window !== "undefined" &&
+      window.localStorage.getItem("authorization")
 
     const t = decode(token)
     const { exp } = t
@@ -44,13 +46,15 @@ export const isAuth = () => {
 
     // Token expired
     if (exp < currentTime) {
-      localStorage.removeItem("authorization")
+      typeof window !== "undefined" &&
+        window.localStorage.removeItem("authorization")
       return false
     }
 
     return true
   } catch (error) {
-    localStorage.removeItem("authorization")
+    typeof window !== "undefined" &&
+      window.localStorage.removeItem("authorization")
     return false
   }
 }

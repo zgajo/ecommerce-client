@@ -21,7 +21,7 @@ module.exports = {
         // This is field under which it's accessible
         fieldName: "ecommerce",
         // Url to query from
-        url: process.env.SERVER_URL,
+        url: process.env.GATSBY_SERVER_URL,
       },
     },
   ],
