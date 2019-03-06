@@ -7,15 +7,17 @@ import {
   Container,
   Label,
 } from "semantic-ui-react"
-import { GoogleLogin } from "react-google-login"
-import FacebookLogin from "react-facebook-login"
-import { Helmet } from "react-helmet"
+// import { GoogleLogin } from "react-google-login"
+// import FacebookLogin from "react-facebook-login"
+// import { Helmet } from "react-helmet"
 import { Formik } from "formik"
 
 import { ResponsiveContainer } from "../components/layout"
 import styles from "./sign_up.module.css"
 import { client } from "../apollo"
-import { signupCustomerWithGoogle, signupCustomer } from "../apollo/mutation"
+import {
+  /*signupCustomerWithGoogle,*/ signupCustomer,
+} from "../apollo/mutation"
 import { asyncAction, formatErrors } from "../utils/helpers"
 import DesktopHeader from "../components/Header"
 import { SignupCustomerSchema } from "../utils/validation"
@@ -45,28 +47,28 @@ class SignUp extends Component {
 
   handleChange = (e, { value }) => this.setState({ value })
 
-  responseGoogle = async response => {
-    let [error, data] = await asyncAction(
-      client.mutate({
-        mutation: signupCustomerWithGoogle,
-        variables: {
-          googleAuthToken: response.accessToken,
-        },
-      })
-    )
+  // responseGoogle = async response => {
+  //   let [error, data] = await asyncAction(
+  //     client.mutate({
+  //       mutation: signupCustomerWithGoogle,
+  //       variables: {
+  //         googleAuthToken: response.accessToken,
+  //       },
+  //     })
+  //   )
 
-    if (error) {
-      this.setState({
-        ...formatErrors(error, this.state),
-      })
-    }
-    if (data) {
-    }
-  }
+  //   if (error) {
+  //     this.setState({
+  //       ...formatErrors(error, this.state),
+  //     })
+  //   }
+  //   if (data) {
+  //   }
+  // }
 
-  responseFacebook = response => {
-    console.log(response)
-  }
+  // responseFacebook = response => {
+  //   console.log(response)
+  // }
 
   render() {
     const {
@@ -78,7 +80,7 @@ class SignUp extends Component {
 
     return (
       <ResponsiveContainer header={<DesktopHeader />}>
-        <Helmet>
+        {/* <Helmet>
           <script src="https://apis.google.com/js/platform.js" async defer />
           <meta
             name="google-signin-client_id"
@@ -86,11 +88,11 @@ class SignUp extends Component {
           />
 
           <title>My Title</title>
-        </Helmet>
+        </Helmet> */}
         <Container style={{ padding: "2em 0em" }}>
           <Segment>
             <div className="center_vertically">
-              <GoogleLogin
+              {/* <GoogleLogin
                 clientId={process.env.GATSBY_GOOGLE_CLIENT_ID} //CLIENTID NOT CREATED YET
                 buttonText="SIGNUP WITH GOOGLE"
                 onSuccess={this.responseGoogle}
@@ -111,7 +113,7 @@ class SignUp extends Component {
                 style={{ height: 43 }}
                 size="medium"
                 icon="fa-facebook"
-              />
+              /> */}
             </div>
             {error && (
               <Message negative>
