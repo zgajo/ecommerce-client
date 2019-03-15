@@ -7,21 +7,19 @@ import {
   Container,
   Label,
 } from "semantic-ui-react"
-// import { GoogleLogin } from "react-google-login"
+import { GoogleLogin } from "react-google-login"
 // import FacebookLogin from "react-facebook-login"
-// import { Helmet } from "react-helmet"
+import { Helmet } from "react-helmet"
 import { Formik } from "formik"
 
 import { ResponsiveContainer } from "../components/layout"
 import styles from "./sign_up.module.css"
 import { client } from "../apollo"
-import {
-  /*signupCustomerWithGoogle,*/ signupCustomer,
-} from "../apollo/mutation"
+import { signupCustomerWithGoogle, signupCustomer } from "../apollo/mutation"
 import { asyncAction, formatErrors } from "../utils/helpers"
 import DesktopHeader from "../components/Header"
 import { SignupCustomerSchema } from "../utils/validation"
-import { graphql } from "gatsby"
+import { graphql, navigate } from "gatsby"
 
 class SignUp extends Component {
   state = {
@@ -43,28 +41,53 @@ class SignUp extends Component {
       mob_phone: "",
     },
     error: "",
+    message: "",
   }
 
   handleChange = (e, { value }) => this.setState({ value })
 
-  // responseGoogle = async response => {
-  //   let [error, data] = await asyncAction(
-  //     client.mutate({
-  //       mutation: signupCustomerWithGoogle,
-  //       variables: {
-  //         googleAuthToken: response.accessToken,
-  //       },
-  //     })
-  //   )
+  responseGoogle = async response => {
+    console.log("res", response)
+    let [error, data] = await asyncAction(
+      client.mutate({
+        mutation: signupCustomerWithGoogle,
+        variables: {
+          googleAuthToken: response.tokenId,
+        },
+      })
+    )
 
-  //   if (error) {
-  //     this.setState({
-  //       ...formatErrors(error, this.state),
-  //     })
-  //   }
-  //   if (data) {
-  //   }
-  // }
+    if (error) {
+      this.setState({
+        ...formatErrors(error, this.state),
+      })
+    }
+    if (data) {
+      console.log(data.data)
+      const { message, success } = data.data.signupCustomerGoogle
+      if (!success) {
+        return this.setState({ error: message, message: "" })
+      }
+
+      this.setState({ message, error: "" })
+
+      this.setState({ counter: 3 })
+
+      let interval = setInterval(() => {
+        this.setState(
+          prev => {
+            return { counter: --prev.counter }
+          },
+          () => {
+            if (this.state.counter < 1) {
+              clearInterval(interval)
+              navigate("/login")
+            }
+          }
+        )
+      }, 1000)
+    }
+  }
 
   // responseFacebook = response => {
   //   console.log(response)
@@ -76,11 +99,11 @@ class SignUp extends Component {
         ecommerce: { shipping_regions },
       },
     } = this.props
-    const { error } = this.state
+    const { error, message, counter } = this.state
 
     return (
       <ResponsiveContainer header={<DesktopHeader />}>
-        {/* <Helmet>
+        <Helmet>
           <script src="https://apis.google.com/js/platform.js" async defer />
           <meta
             name="google-signin-client_id"
@@ -88,11 +111,11 @@ class SignUp extends Component {
           />
 
           <title>My Title</title>
-        </Helmet> */}
+        </Helmet>
         <Container style={{ padding: "2em 0em" }}>
           <Segment>
             <div className="center_vertically">
-              {/* <GoogleLogin
+              <GoogleLogin
                 clientId={process.env.GATSBY_GOOGLE_CLIENT_ID} //CLIENTID NOT CREATED YET
                 buttonText="SIGNUP WITH GOOGLE"
                 onSuccess={this.responseGoogle}
@@ -102,7 +125,7 @@ class SignUp extends Component {
                   color: "#444",
                 }}
               />
-
+              {/* 
               <FacebookLogin
                 cssClass="facebook_login"
                 appId={process.env.GATSBY_FACEBOOK_APP_ID}
@@ -119,6 +142,12 @@ class SignUp extends Component {
               <Message negative>
                 <Message.Header>There was some error</Message.Header>
                 <p>{error}</p>
+              </Message>
+            )}
+            {message && (
+              <Message positive>
+                <Message.Header>{message}</Message.Header>
+                <p>You will be redirected in {counter}</p>
               </Message>
             )}
 
@@ -154,7 +183,6 @@ class SignUp extends Component {
               }) => (
                 <Form className={styles.form_width} onSubmit={handleSubmit}>
                   <br />
-                  {console.log(status)}
                   <Form.Group widths="equal">
                     <Form.Field>
                       <Form.Input
